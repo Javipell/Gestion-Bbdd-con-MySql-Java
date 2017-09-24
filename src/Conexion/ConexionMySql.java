@@ -237,28 +237,28 @@ public class ConexionMySql
             while (resultado.next()) 
             {
                 // La 4 corresponde al TABLE_NAME
-                System.out.println("columna " + resultado.getString(4));
+                //System.out.println("columna " + resultado.getString(4));
                 // y la 6 al TYPE_NAME
-                System.out.println("tipo " + resultado.getString(6));
+                //System.out.println("tipo " + resultado.getString(6));
                 nombreCamposTipos.put(resultado.getString(4), resultado.getString(6) );
             }
             // 1a forma de recorrer el HashMap con un iterator
             String clave ;
             Iterator<String> campos = nombreCamposTipos.keySet().iterator();
-            System.out.println("1a forma de recorrer el HashMap con un iterator");
+            //System.out.println("1a forma de recorrer el HashMap con un iterator");
             while (campos.hasNext()) 
             {
                 clave = campos.next();
-                System.out.println("nombres de campos "+ clave + " - " + nombreCamposTipos.get(clave));
+                //System.out.println("nombres de campos "+ clave + " - " + nombreCamposTipos.get(clave));
             }
             // 2a forma de recorrer el HashMap
             Iterator iterador = nombreCamposTipos.entrySet().iterator();
             Map.Entry campos2;
-            System.out.println("2a forma de recorrer el HashMap");
+            //System.out.println("2a forma de recorrer el HashMap");
             while (iterador.hasNext()) 
             {
                 campos2 = (Map.Entry) iterador.next();
-                System.out.println("nombre de camopos: "+ campos2.getKey() + "-" + campos2.getValue());
+                //System.out.println("nombre de camopos: "+ campos2.getKey() + "-" + campos2.getValue());
             }
         } 
         catch (SQLException ex) 
@@ -296,18 +296,18 @@ public class ConexionMySql
             ResultSet resultado;
             // null = actual, % = todas
             resultado = metaData.getTables(null, null, "%" , null);
-            System.out.println("Listado de objetos:");
+            //System.out.println("Listado de objetos:");
             while (resultado.next()) 
             {
                 // La columna 1 es TABLE_CAT
-                System.out.println("Catalogo: " +resultado.getString(1)); 
+                //System.out.println("Catalogo o: " +resultado.getString(1)); 
                 this.nombreBbdd.add( resultado.getString("TABLE_CAT"));
                 
                 // y la 2 es
-                System.out.println("Tipo: "+ resultado.getString(2));
+                //System.out.println("Tipo o: "+ resultado.getString(2));
                 
                 // y la 3 es TABLE_NAME
-                System.out.println("Tabla: "+ resultado.getString("TABLE_NAME"));
+                //System.out.println("Tabla o: "+ resultado.getString("TABLE_NAME"));
                 this.nombreTablas.add( resultado.getString("TABLE_NAME"));
                 
                 obtieneNombresCampos(resultado.getString("TABLE_NAME"));
@@ -354,7 +354,7 @@ public class ConexionMySql
             {
                 // añadimos al arrayList los nombres de los campos
                 this.nombreCampos.add( resultado.getString("Field") );
-                System.out.println("campo: "+resultado.getString("Field"));
+                //System.out.println("campo: "+resultado.getString("Field"));
             }
             // liberamos memoria
             resultado.close();
@@ -389,7 +389,7 @@ public class ConexionMySql
         String sql = "SELECT * FROM persona";
         try 
         {
-            System.out.println("Metodo obtieneNombreCamposDeConsulta ");
+            //System.out.println("Metodo obtieneNombreCamposDeConsulta ");
             Statement estado = this.conexion.createStatement();
             ResultSet resultado = estado.executeQuery(sql);
             // A partir del ResultSet, podemos obtener el ResultSetMetaData, 
@@ -403,13 +403,12 @@ public class ConexionMySql
 					  
             //número de columnas (campos) de la consula SQL            	  
             numColumnas = resultado.getMetaData().getColumnCount();
-            System.out.println("llego "+ numColumnas);
             // el for debe empezar en uno 
             for (int i = 1; i <= numColumnas; i++) 
             {
-                System.out.println("Tabla: " + rsmd.getTableName(i) 
+                /*System.out.println("Tabla: " + rsmd.getTableName(i) 
                         + " Columna " + rsmd.getColumnName(i) 
-                        + " Tipo " + rsmd.getColumnTypeName(i) );
+                        + " Tipo " + rsmd.getColumnTypeName(i) );*/
             }
         } 
         catch (SQLException ex) 
@@ -497,6 +496,10 @@ public class ConexionMySql
     public ArrayList getNombreCampos() 
     {
         return nombreCampos;
+    }
+    public ArrayList getNombreTablas()
+    {
+        return nombreTablas;
     }
     public ArrayList getNombreCatalogos()
     {

@@ -14,6 +14,7 @@ public class AccesoBbdd extends javax.swing.JFrame {
 
     public ConexionMySql conexion ;
     public Boolean acceso = false;
+    public static ConexionMySql conexion2;
     
     /**
      * Creates new form AccesoBbdd
@@ -181,7 +182,7 @@ public class AccesoBbdd extends javax.swing.JFrame {
             conexion = new ConexionMySql( txtBaseDatos.getText(), 
                     txtUsuario.getText() , 
                     String.valueOf( txtContraseña.getPassword() ) );
-            
+            conexion2 = conexion;
             this.setVisible(false);
             
             // desconecto la conexion porque tengo guardados los valores en el formulario

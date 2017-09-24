@@ -22,6 +22,7 @@ import javax.swing.JTable;
 public class Principal extends javax.swing.JFrame {
 
     public ConexionMySql conexion;
+    public static String tablaSeleccionada = "";
 
     /**
      * Creates new form Principal
@@ -52,10 +53,11 @@ public class Principal extends javax.swing.JFrame {
         txtBase = new javax.swing.JTextField();
         txtContraseña = new javax.swing.JTextField();
         jMenuBar1 = new javax.swing.JMenuBar();
-        menuArchvio = new javax.swing.JMenu();
+        menuArchivo = new javax.swing.JMenu();
         menuAbrirBbdd = new javax.swing.JMenuItem();
         jMenuAccesoBbdd = new javax.swing.JMenuItem();
         jMenuGestion = new javax.swing.JMenu();
+        jMenuTablas = new javax.swing.JMenuItem();
         jMenuItemListado = new javax.swing.JMenuItem();
         jMenuBuscar = new javax.swing.JMenuItem();
         jMenuAñadirRegistro = new javax.swing.JMenuItem();
@@ -101,7 +103,7 @@ public class Principal extends javax.swing.JFrame {
 
         jMenuBar1.setForeground(new java.awt.Color(0, 0, 204));
 
-        menuArchvio.setLabel("Archvio");
+        menuArchivo.setText("Archivo");
 
         menuAbrirBbdd.setText("Buscar Archivos");
         menuAbrirBbdd.addActionListener(new java.awt.event.ActionListener() {
@@ -109,7 +111,7 @@ public class Principal extends javax.swing.JFrame {
                 menuAbrirBbddActionPerformed(evt);
             }
         });
-        menuArchvio.add(menuAbrirBbdd);
+        menuArchivo.add(menuAbrirBbdd);
 
         jMenuAccesoBbdd.setText("Acceso BBDD");
         jMenuAccesoBbdd.addActionListener(new java.awt.event.ActionListener() {
@@ -117,11 +119,19 @@ public class Principal extends javax.swing.JFrame {
                 jMenuAccesoBbddActionPerformed(evt);
             }
         });
-        menuArchvio.add(jMenuAccesoBbdd);
+        menuArchivo.add(jMenuAccesoBbdd);
 
-        jMenuBar1.add(menuArchvio);
+        jMenuBar1.add(menuArchivo);
 
         jMenuGestion.setText("Gestion");
+
+        jMenuTablas.setText("Seleccionar Tabla");
+        jMenuTablas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuTablasActionPerformed(evt);
+            }
+        });
+        jMenuGestion.add(jMenuTablas);
 
         jMenuItemListado.setLabel("Listado Completo");
         jMenuItemListado.addActionListener(new java.awt.event.ActionListener() {
@@ -220,7 +230,8 @@ public class Principal extends javax.swing.JFrame {
 
     private void jMenuItemListadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemListadoActionPerformed
 
-        String sql = "SELECT * FROM persona";
+        
+        String sql = "SELECT * FROM " + tablaSeleccionada;
         listaDatos(sql);
     }//GEN-LAST:event_jMenuItemListadoActionPerformed
     
@@ -403,8 +414,8 @@ public class Principal extends javax.swing.JFrame {
                         mensajeError();
                     }
                     
-                    sql = "SELECT * FROM persona WHERE " 
-                            + datosSolicitados.get(seleccion)+" LIKE '%"+ respuesta +"%' ";
+                    sql = "SELECT * FROM " + tablaSeleccionada + " WHERE "
+                            + datosSolicitados.get(seleccion) + " LIKE '%" + respuesta + "%' ";
                     
                     listaDatos(sql);
                 }
@@ -412,13 +423,23 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jMenuBuscarActionPerformed
 
+    private void jMenuTablasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuTablasActionPerformed
+        // TODO add your handling code here:
+        
+        if ( creaConexion() )
+        {
+            Tablas frmTablas = new Tablas();
+            frmTablas.setVisible(true);
+        }
+    }//GEN-LAST:event_jMenuTablasActionPerformed
+
     public void listaDatos(String sql)
     {
         if (creaConexion() == true) 
         {
             ListaPersona lista = new ListaPersona();
             Persona p = new Persona();
-
+            System.out.println("sql " + sql);
             ArrayList<Persona> listaPersona = lista.listadoTodosRegistros(sql);
             int numeroRegistros = listaPersona.size();
 
@@ -428,7 +449,6 @@ public class Principal extends javax.swing.JFrame {
             // creamos un objeto para guardar los nombres de las columnas
             //Object[] columnas = {"IdPersona", "Nombre", "Edad", "Profesion", "Telefono"};
             Object[] columnas = new Object[datosSolicitados.size()];
-            System.out.println("llego listaDatos");
             for (int i = 0; i < datosSolicitados.size(); i++) 
             {
                 columnas[i] = datosSolicitados.get(i);
@@ -449,7 +469,8 @@ public class Principal extends javax.swing.JFrame {
                 JTable table = new JTable(filas, columnas);
                 jScrollPane1.setViewportView(table);
             } else {
-                JOptionPane.showMessageDialog(null, "Actualmente no existen registros de personas",
+                JOptionPane.showMessageDialog(null, "Actualmente no existen registros" 
+                        + "\nTabla seleccionada: " + tablaSeleccionada,
                         "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
                 jPanel1.setVisible(false);
             }
@@ -475,7 +496,23 @@ public class Principal extends javax.swing.JFrame {
             conexion = new ConexionMySql(AccesoBbdd.txtBaseDatos.getText(),
                     AccesoBbdd.txtUsuario.getText(), 
                     String.valueOf( AccesoBbdd.txtContraseña.getPassword() ) );
-            respuesta = true;
+            int valor = conexion.getNombreTablas().size();
+            if (valor>0)
+            {
+                if (tablaSeleccionada!="")
+                {
+                    respuesta = true;
+                } 
+                else
+                {
+                    Tablas frmTablas = new Tablas();
+                    frmTablas.setVisible(true);
+                }
+            } 
+            else
+            {
+                JOptionPane.showMessageDialog(null, "No hay tablas en esta base de datos");
+            }
         }
         return respuesta;
     }
@@ -528,12 +565,13 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemListado;
     private javax.swing.JMenuItem jMenuItemListadoId;
     private javax.swing.JMenuItem jMenuSalir;
+    private javax.swing.JMenuItem jMenuTablas;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JTable jTable1;
     private javax.swing.JMenuItem menuAbrirBbdd;
-    private javax.swing.JMenu menuArchvio;
+    private javax.swing.JMenu menuArchivo;
     private javax.swing.JMenu menuSalir;
     public static javax.swing.JTextField txtBase;
     public static javax.swing.JTextField txtContraseña;

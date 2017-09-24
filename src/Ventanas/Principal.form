@@ -23,9 +23,9 @@
         </Property>
       </Properties>
       <SubComponents>
-        <Menu class="javax.swing.JMenu" name="menuArchvio">
+        <Menu class="javax.swing.JMenu" name="menuArchivo">
           <Properties>
-            <Property name="label" type="java.lang.String" value="Archvio"/>
+            <Property name="text" type="java.lang.String" value="Archivo"/>
           </Properties>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="menuAbrirBbdd">
@@ -51,6 +51,14 @@
             <Property name="text" type="java.lang.String" value="Gestion"/>
           </Properties>
           <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuTablas">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Seleccionar Tabla"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuTablasActionPerformed"/>
+              </Events>
+            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItemListado">
               <Properties>
                 <Property name="label" type="java.lang.String" value="Listado Completo"/>
