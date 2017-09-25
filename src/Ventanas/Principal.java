@@ -8,10 +8,15 @@ package Ventanas;
 import ClasesTablas.Persona;
 import Conexion.ConexionMySql;
 import ListaArray.ListaPersona;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
@@ -22,7 +27,9 @@ import javax.swing.JTable;
 public class Principal extends javax.swing.JFrame {
 
     public ConexionMySql conexion;
+    public static String bbddSeleccionada = "";
     public static String tablaSeleccionada = "";
+    public static String[][] tiposCampos; // = new String[100][2];
 
     /**
      * Creates new form Principal
@@ -230,7 +237,6 @@ public class Principal extends javax.swing.JFrame {
 
     private void jMenuItemListadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemListadoActionPerformed
 
-        
         String sql = "SELECT * FROM " + tablaSeleccionada;
         listaDatos(sql);
     }//GEN-LAST:event_jMenuItemListadoActionPerformed
@@ -292,7 +298,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemListadoIdActionPerformed
 
     private void jMenuAñadirRegistroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuAñadirRegistroActionPerformed
-        // TODO add your handling code here:
+
         jPanel1.setVisible(false);
         if (creaConexion() == true) {
             Persona p = new Persona();
@@ -325,10 +331,19 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuAñadirRegistroActionPerformed
 
     private void jMenuAñadirRegistro2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuAñadirRegistro2ActionPerformed
-        // TODO add your handling code here:
+
         jPanel1.setVisible(false);
-        if (creaConexion() == true) {
-            Persona p = new Persona();
+        if (creaConexion() == true) 
+        {
+            conexion.obtieneNombresCampos( tablaSeleccionada );
+            conexion.obtenerNombresColumnas(bbddSeleccionada, tablaSeleccionada);
+            HashMap hm = conexion.getNombreCamposTipos();
+            System.out.println("bbddSeleccionada: " + bbddSeleccionada 
+                    + "\ntablaseleccionada: " + tablaSeleccionada
+                    + "\nlogitud hm: "+ hm.size());
+
+            
+            //Persona p = new Persona();
             ListaPersona lista = new ListaPersona();
 
             String mensaje = "Introduce \n\n";
@@ -337,13 +352,37 @@ public class Principal extends javax.swing.JFrame {
             ArrayList datosSolicitados = conexion.getNombreCampos();
             
             String[] datosRecogidos = new String[ datosSolicitados.size() ];
+            
+            creaArrayCamposTipos();
 
-            for (int i = 0; i < datosSolicitados.size(); i++) {
+            String sql = "INSERT INTO " + tablaSeleccionada 
+                    + " VALUES (";
+
+            for (int i = 0; i < datosSolicitados.size(); i++) 
+            {
                 datosRecogidos[i] = JOptionPane.showInputDialog(null,
                         (mensaje + datosSolicitados.get(i))  + " : \n");
-            }
+                //System.out.println("3 campo ("+i+")"+ tiposCampos[i][0]+" - "+tiposCampos[i][1]);
+                if (tiposCampos[i][1]!="TINYINT") 
+                {
+                    sql += (i<datosSolicitados.size()-1) 
+                            ? "'"+datosRecogidos[i]+"', " 
+                            : "'"+datosRecogidos[i]+"' ";
+                }
+                else
+                {
+                    System.out.println("es tinyint");
+                    System.out.println("3 campo ("+i+")"+ tiposCampos[i][0]+" - "+tiposCampos[i][1]);
 
-            int b = 0;
+                    sql += (i==datosSolicitados.size()) 
+                            ? "" + datosRecogidos[i]+", " 
+                            : "" + datosRecogidos[i]+" " ;
+                }
+            }
+            sql += " )";
+            System.out.println("SQL añadir registro2 : " + sql);
+
+            /*int b = 0;
             p.setIdPersona(Integer.parseInt(datosRecogidos[b++]));
             p.setNombrePersona(datosRecogidos[b++]);
             p.setEdadPersona(Integer.parseInt(datosRecogidos[b++]));
@@ -358,7 +397,9 @@ public class Principal extends javax.swing.JFrame {
                     + "', '" + p.getTelefonoPersona() 
                     + "', " + p.getCasadoPersona()
                     + " )";
-            System.out.println("sql "+sql);
+            System.out.println("sql "+sql);*/
+            
+            
 
             conexion.modificaRegistros(sql);
 
@@ -373,13 +414,12 @@ public class Principal extends javax.swing.JFrame {
         String sql ="";
         int seleccion =0 ;
         String cadena = "Seleccione el dato que desea buscar \n";
-        //String[] datosSolicitados = {"Id", "Nombre", "Edad", "Profesion", "Telefono"};
-
 
         String respuesta ="";
         
         if (creaConexion() == true) 
         {
+            conexion.obtieneNombresCampos( tablaSeleccionada );
             // guardo en un arralist los nombres de los campos de la tabla
             ArrayList datosSolicitados = conexion.getNombreCampos() ;
 
@@ -433,15 +473,101 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jMenuTablasActionPerformed
 
+    /**
+     * Metodo listadDatos
+     * comprueba que existe una conexion, recibe los datos de la consulta
+     * en la clase ListaPersona y el metodo ListadoTodosRegistros
+     * @param sql tipo string Representa la consulta a realizar 
+     */
     public void listaDatos(String sql)
     {
         if (creaConexion() == true) 
         {
             conexion.obtieneNombresCampos( tablaSeleccionada );
+            
             ListaPersona lista = new ListaPersona();
+            // recibe los datos de la consulta sql
+            ResultSet listaPersona = lista.listadoTodosRegistros(sql);
+            
+            int numeroRegistros = 0;
+            
+            // calcula el numero de registros devueltos por la consulta
+            try 
+            {
+                listaPersona.last(); // va al ultimo registro
+                numeroRegistros = listaPersona.getRow();
+                listaPersona.beforeFirst(); // vuelve al primero
+            } 
+            catch (SQLException ex) 
+            {
+                System.out.println("Error en el conteo. \n" +ex.getMessage());
+            }
+            
+            jPanel1.setVisible(true);
+            
+            // guardo en un arralist los nombres de los campos de la tabla
+            ArrayList datosSolicitados = conexion.getNombreCampos() ;
+            // creamos un objeto para guardar los nombres de las columnas
+            //Object[] columnas = {"IdPersona", "Nombre", "Edad", "Profesion", "Telefono"};
+            Object[] columnas = new Object[datosSolicitados.size()];
+            // pasamos los nombres de los campos a las columnas de la tabla
+            for (int i = 0; i < datosSolicitados.size(); i++) 
+            {
+                columnas[i] = datosSolicitados.get(i);
+            }
+            
+            // creamos un objeto array bidimensional para guardar los registro
+            Object[][] filas = new Object[numeroRegistros][columnas.length];
+ 
+            int j = 0; // numero de fila donde guardar el registro
+            if (numeroRegistros > 0) 
+            {
+                try 
+                {
+                    while (listaPersona.next())
+                    {
+                        // recorre los campos de cada registro
+                        for (int k = 0; k < datosSolicitados.size() ; k++) 
+                        {
+                            // añade en la columna y campo el valor que hay en la consulta
+                            filas[j][k] =  listaPersona.getString(k+1);
+                        }
+                        j++; // incrementa la fila
+                    }
+                } catch (SQLException ex) 
+                {
+                    System.out.println("Error en el Metodo listadoDatos \n" 
+                            + ex.getMessage());
+                }
+
+                JTable table = new JTable(filas, columnas);
+                jScrollPane1.setViewportView(table);
+            } else {
+                JOptionPane.showMessageDialog(null, "Actualmente no existen registros" 
+                        + "\nTabla seleccionada: " + tablaSeleccionada,
+                        "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+                jPanel1.setVisible(false);
+            }
+        }
+    }
+    
+    /**
+     * Metodo listadoDatos_old
+     * *********************************************
+     * *** metodo obsoleto, solo vale para una clase
+     * *********************************************
+     * @param sql tipo string Consulta a ejecutar
+     */
+    public void listaDatos_old(String sql)
+    {
+        if (creaConexion() == true) 
+        {
+            conexion.obtieneNombresCampos( tablaSeleccionada );
+            ListaPersona lista = new ListaPersona();
+            // crea una instancia de la clase persona
             Persona p = new Persona();
-            System.out.println("sql " + sql);
-            ArrayList<Persona> listaPersona = lista.listadoTodosRegistros(sql);
+            // guarda los datos recibidos de la consulta en el ArrayList de la clase Persona
+            ArrayList<Persona> listaPersona = lista.listadoTodosRegistros_old(sql);
             int numeroRegistros = listaPersona.size();
 
             jPanel1.setVisible(true);
@@ -519,6 +645,34 @@ public class Principal extends javax.swing.JFrame {
             }
         }
         return respuesta;
+    }
+    
+    public void creaArrayCamposTipos()
+    {
+        // 2a forma de recorrer el HashMap
+        HashMap hm = conexion.getNombreCamposTipos();
+        // no se puede definir el array aqui por que al salir pierde los datos
+        // como se define un array goblal sin conocer su dimension????
+        tiposCampos = new String[hm.size()][2];
+        
+        Iterator iterador = conexion.getNombreCamposTipos().entrySet().iterator();
+        Map.Entry campos2;
+        System.out.println("tamaño del iterator "+hm.size() );
+        int i  = 0;
+        
+        while (iterador.hasNext()) 
+        {
+            campos2 = (Map.Entry) iterador.next();
+            String nomCampo = String.valueOf( campos2.getKey() ) ;
+            String tipCampo = String.valueOf( campos2.getValue() ) ;
+            tiposCampos[i][0] = nomCampo;
+            tiposCampos[i][1] = tipCampo;
+            // TODO ........
+            // LOS DESORDENA
+            // COMO ORDENARLOS ???
+            System.out.println(""+i+" campo "+ tiposCampos[i][0]+" - "+tiposCampos[i][1]);
+            i++;
+        }
     }
 
     /**

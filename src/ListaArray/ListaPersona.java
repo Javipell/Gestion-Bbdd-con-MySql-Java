@@ -27,7 +27,7 @@ public class ListaPersona
      * @param sql tipo string
      * @return empleado tipo ArrayList
      */
-    public ArrayList<Persona> listadoTodosRegistros(String sql)
+    public ArrayList<Persona> listadoTodosRegistros_old(String sql)
     {
         // creo una conexion con los valores ocultos del formulario AccesoBbdd
         conexion = new ConexionMySql( AccesoBbdd.txtBaseDatos.getText() , 
@@ -110,5 +110,27 @@ public class ListaPersona
         return empleado;
     }
     
-    
+    public ResultSet listadoTodosRegistros(String sql)
+    {
+        ResultSet resultado =null;
+
+        // creo una conexion con los valores ocultos del formulario AccesoBbdd
+        conexion = new ConexionMySql( AccesoBbdd.txtBaseDatos.getText() , 
+                 AccesoBbdd.txtUsuario.getText(), 
+                String.valueOf( AccesoBbdd.txtContraseña.getPassword() ) );
+        
+        try 
+        {
+            // preparo la consulta
+            PreparedStatement consulta = conexion.getConexion().prepareStatement(sql);
+            // ejecuto la consulta y la guardo en la varible resultado
+            resultado = consulta.executeQuery();
+
+        } 
+        catch (Exception ex) 
+        {
+            System.out.println("Error en el Metodo listadoTodosRegistros \n" +ex.getMessage());
+        }
+        return resultado;
+    }
 }

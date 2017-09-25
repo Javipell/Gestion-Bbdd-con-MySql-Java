@@ -28,7 +28,6 @@ public class ConexionMySql
     
     private ArrayList nombreCampos = new ArrayList<>();
     private HashMap nombreCamposTipos = new HashMap<>();
-    // no se detectan los nobres de variables utilizadas dentro de un try ???
     private ArrayList nombreTablas = new ArrayList<>();
     private ArrayList nombreBbdd = new ArrayList<>();
     private ArrayList nombreCatalogos = new ArrayList<>();
@@ -198,18 +197,19 @@ public class ConexionMySql
     
     public void cuentaRegistros( ResultSet resultado )
     {
-            try 
-            {
-                resultado.last(); // va al ultimo registro
-                numeroResultados = resultado.getRow();
-                resultado.beforeFirst();
-                System.out.println("numero  resultados "+ numeroResultados);
-            } 
-            catch (SQLException ex) 
-            {
-                System.out.println("Error en el conteo. \n" +ex.getMessage());
-            }
+        try 
+        {
+            resultado.last(); // va al ultimo registro
+            numeroResultados = resultado.getRow();
+            resultado.beforeFirst();
+            System.out.println("numero  resultados "+ numeroResultados);
+        } 
+        catch (SQLException ex) 
+        {
+            System.out.println("Error en el conteo. \n" +ex.getMessage());
+        }
     }
+    
     /**
      * Metodo obtenerNombresColumnas
      * mediante DatabaseMetaData e indicandole el catalogo y la tabla
@@ -253,9 +253,9 @@ public class ConexionMySql
             while (resultado.next()) 
             {
                 // La 4 corresponde al TABLE_NAME
-                //System.out.println("columna " + resultado.getString(4));
+                System.out.println("columna " + resultado.getString(4));
                 // y la 6 al TYPE_NAME
-                //System.out.println("tipo " + resultado.getString(6));
+                System.out.println("tipo " + resultado.getString(6));
                 nombreCamposTipos.put(resultado.getString(4), resultado.getString(6) );
             }
             // 1a forma de recorrer el HashMap con un iterator
@@ -359,9 +359,8 @@ public class ConexionMySql
         
         Statement estado ;
         ResultSet resultado = null;
-        System.out.println("num campos " + this.nombreCampos.size());
+        // vacia nombreCampos
         this.nombreCampos.clear();
-        System.out.println("num campos " + this.nombreCampos.size());
         try 
         {
             estado = this.getConexion().createStatement();
@@ -373,6 +372,8 @@ public class ConexionMySql
                 // añadimos al arrayList los nombres de los campos
                 this.nombreCampos.add( resultado.getString("Field") );
                 System.out.println("campo: "+resultado.getString("Field"));
+                // parametros nombre de la bbdd, y nombre de la tabla
+                //obtenerNombresColumnas( "mibasedatos", "persona" );
             }
             // liberamos memoria
             resultado.close();
@@ -514,6 +515,9 @@ public class ConexionMySql
     public ArrayList getNombreCampos() 
     {
         return nombreCampos;
+    }
+    public HashMap getNombreCamposTipos() {
+        return nombreCamposTipos;
     }
     public ArrayList getNombreTablas()
     {

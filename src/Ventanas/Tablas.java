@@ -5,8 +5,6 @@
  */
 package Ventanas;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -44,9 +42,6 @@ public class Tablas extends javax.swing.JFrame
             
             boton.setActionCommand( boton.getName() );
             boton.setFont(new java.awt.Font("Lucida Grande", 1, 16));
-            //if (i==0) { boton.isSelected(); }
-            //boton.setSelected( (i==0) ? true : false ) ;
-            //Principal.tablaSeleccionada= String.valueOf(tablas.get(0));
 
             //<editor-fold defaultstate="collapsed" desc="Instrucciones de implementacion">
             /* 
@@ -96,11 +91,12 @@ public class Tablas extends javax.swing.JFrame
             {
                 public void actionPerformed(java.awt.event.ActionEvent evt) 
                 {
-                    //SalirActionPerformed(evt);
+                    /*
                     JOptionPane.showMessageDialog(null, "Ha seleccionado la tabla: " 
                             + boton.getText()
                             , "Seleccion realizada", JOptionPane.INFORMATION_MESSAGE);
                     System.out.println("evento seleccinado " + evt.getActionCommand());
+                    */
                     Principal.tablaSeleccionada= evt.getActionCommand();
                     
                 }
@@ -114,7 +110,6 @@ public class Tablas extends javax.swing.JFrame
         // actualizo el panel para que se vea el nuevo boton
         jPanel1.updateUI();
     }
-
     
     
     /**
@@ -181,9 +176,6 @@ public class Tablas extends javax.swing.JFrame
         {
             JOptionPane.showMessageDialog(null, "Debe seleccionar una tabla.");
         }
-        
-        
-
     }//GEN-LAST:event_btnSalirActionPerformed
 
     /**

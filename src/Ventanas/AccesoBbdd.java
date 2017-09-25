@@ -169,6 +169,7 @@ public class AccesoBbdd extends javax.swing.JFrame {
                 lblNombreBbdd.setVisible(true);
                 txtBaseDatos.setVisible(true);
                 cmbBbdd.setVisible(true);
+                Principal.bbddSeleccionada = cmbBbdd.getSelectedItem().toString() ;
             }    
             else 
             {
@@ -183,6 +184,9 @@ public class AccesoBbdd extends javax.swing.JFrame {
                     txtUsuario.getText() , 
                     String.valueOf( txtContraseña.getPassword() ) );
             conexion2 = conexion;
+            Principal.bbddSeleccionada = cmbBbdd.getSelectedItem().toString() ;
+            System.out.println("acceso bbdd seleccionada: " + cmbBbdd.getSelectedItem().toString());
+
             this.setVisible(false);
             
             // desconecto la conexion porque tengo guardados los valores en el formulario
@@ -214,7 +218,8 @@ public class AccesoBbdd extends javax.swing.JFrame {
 
     private void cmbBbddItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbBbddItemStateChanged
         // TODO add your handling code here:
-        txtBaseDatos.setText( String.valueOf( cmbBbdd.getSelectedItem() ) );
+        txtBaseDatos.setText( cmbBbdd.getSelectedItem().toString() );
+        Principal.bbddSeleccionada = txtBaseDatos.getText() ;
     }//GEN-LAST:event_cmbBbddItemStateChanged
 
     /**
