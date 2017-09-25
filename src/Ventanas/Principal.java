@@ -457,6 +457,9 @@ public class Principal extends javax.swing.JFrame {
             
             // creamos un objeto array bidimensional para guardar los registro
             Object[][] filas = new Object[numeroRegistros][columnas.length];
+            //
+            // OBJETIVO CAMBIAR ESTE SISTEMA POR OTRO QUE SIRVA PARA CUALQUIER TABLA
+            //
 
             if (listaPersona.size() > 0) {
                 for (int i = 0; i < listaPersona.size(); i++) {
