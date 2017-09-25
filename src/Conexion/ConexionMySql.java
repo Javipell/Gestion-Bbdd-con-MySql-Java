@@ -20,6 +20,7 @@ import javax.swing.JOptionPane;
 public class ConexionMySql 
 {
     
+    public int numeroResultados;
     private String Bbdd ; 
     private String url ; 
     private String login ; 
@@ -175,6 +176,28 @@ public class ConexionMySql
         {
             estado = this.getConexion().createStatement();
             ResultSet resultado = estado.executeQuery(sql);
+            cuentaRegistros( resultado );
+            /*try 
+            {
+                resultado.last(); // va al ultimo registro
+                numeroResultados = resultado.getRow();
+                resultado.beforeFirst();
+                System.out.println("numero  resultados "+ numeroResultados);
+            } 
+            catch (SQLException ex) 
+            {
+                System.out.println("Error en el conteo. \n" +ex.getMessage());
+            }*/
+        } 
+        catch (Exception ex) 
+        {
+            System.out.println("Error en la consulta. \n" +ex.getMessage());
+        }
+        return numeroResultados;
+    }
+    
+    public void cuentaRegistros( ResultSet resultado )
+    {
             try 
             {
                 resultado.last(); // va al ultimo registro
@@ -186,14 +209,7 @@ public class ConexionMySql
             {
                 System.out.println("Error en el conteo. \n" +ex.getMessage());
             }
-        } 
-        catch (Exception ex) 
-        {
-            System.out.println("Error en la consulta. \n" +ex.getMessage());
-        }
-        return numeroResultados;
     }
-    
     /**
      * Metodo obtenerNombresColumnas
      * mediante DatabaseMetaData e indicandole el catalogo y la tabla
@@ -310,11 +326,11 @@ public class ConexionMySql
                 //System.out.println("Tabla o: "+ resultado.getString("TABLE_NAME"));
                 this.nombreTablas.add( resultado.getString("TABLE_NAME"));
                 
-                obtieneNombresCampos(resultado.getString("TABLE_NAME"));
+                //obtieneNombresCampos(resultado.getString("TABLE_NAME"));
                 
-                obtenerNombresColumnas( resultado.getString(1), resultado.getString(3) );
+                //obtenerNombresColumnas( resultado.getString(1), resultado.getString(3) );
                 // quitar solo esta para pruebas
-                obtieneNombreCamposDeConsulta ();
+                //obtieneNombreCamposDeConsulta ();
             }
             
         } 
@@ -343,7 +359,9 @@ public class ConexionMySql
         
         Statement estado ;
         ResultSet resultado = null;
-        
+        System.out.println("num campos " + this.nombreCampos.size());
+        this.nombreCampos.clear();
+        System.out.println("num campos " + this.nombreCampos.size());
         try 
         {
             estado = this.getConexion().createStatement();
@@ -354,7 +372,7 @@ public class ConexionMySql
             {
                 // añadimos al arrayList los nombres de los campos
                 this.nombreCampos.add( resultado.getString("Field") );
-                //System.out.println("campo: "+resultado.getString("Field"));
+                System.out.println("campo: "+resultado.getString("Field"));
             }
             // liberamos memoria
             resultado.close();

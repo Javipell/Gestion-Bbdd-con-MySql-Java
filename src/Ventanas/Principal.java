@@ -437,6 +437,7 @@ public class Principal extends javax.swing.JFrame {
     {
         if (creaConexion() == true) 
         {
+            conexion.obtieneNombresCampos( tablaSeleccionada );
             ListaPersona lista = new ListaPersona();
             Persona p = new Persona();
             System.out.println("sql " + sql);
