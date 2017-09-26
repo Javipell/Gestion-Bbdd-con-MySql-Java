@@ -21,6 +21,7 @@ public class ConexionMySql
 {
     
     public int numeroResultados;
+    public static String errorConexion = "";
     private String Bbdd ; 
     private String url ; 
     private String login ; 
@@ -43,6 +44,7 @@ public class ConexionMySql
      */
     public ConexionMySql(String user, String pass)
     {
+        errorConexion = "";
         String nombre ="";
         String url = "jdbc:mysql://localhost/";
         ResultSet resultado;
@@ -69,12 +71,19 @@ public class ConexionMySql
             } 
             catch (SQLException ex) 
             {
-                System.out.println("Error de Conexion en DriveManneger");
+                errorConexion = ex.getMessage();
+                JOptionPane.showMessageDialog(null,"Error de Conexion en DriveManneger.\n\n"
+                        + ex.getMessage()+ "\n\n"+ConexionMySql.class.getName(),
+                        "Error de conexion", JOptionPane.ERROR_MESSAGE);
                 Logger.getLogger(ConexionMySql.class.getName()).log(Level.SEVERE, null, ex);
             }
         } 
         catch (ClassNotFoundException ex) 
         {
+            errorConexion = ex.getMessage();
+            JOptionPane.showMessageDialog(null,"Error de Conexion en Class forName.\n\n"
+                        + ex.getMessage()+ "\n\n"+ConexionMySql.class.getName(),
+                        "Error de conexion", JOptionPane.ERROR_MESSAGE);
             System.out.println("Error en Class forName ");
             Logger.getLogger(ConexionMySql.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -89,6 +98,7 @@ public class ConexionMySql
      */
     public ConexionMySql( String base, String usuario, String pass)
     {
+        errorConexion ="";
         Bbdd = base;
         login = usuario;
         password = pass;
@@ -113,6 +123,10 @@ public class ConexionMySql
             /* se lanza cuando hay algún problema entre la base de datos y 
              * el programa Java JDBC.
             */
+            errorConexion = ex.getMessage();
+            JOptionPane.showMessageDialog(null,"Error de Conexion SQLException.\n\n"
+                        + ex.getMessage()+ "\n\n"+ConexionMySql.class.getName(),
+                        "Error de conexion", JOptionPane.ERROR_MESSAGE);
             System.out.println("Error SQLException: " 
                     + "\n Causa: "+ ex.getCause() 
                     + "\n Mensaje: " + ex.getMessage() 
@@ -124,6 +138,10 @@ public class ConexionMySql
             * La definición de la clase no se encuentra debido a que la librería 
             * que lo contiene no esta en el classpath de la aplicación
             */
+            errorConexion = ex.getMessage();
+            JOptionPane.showMessageDialog(null,"Error de Conexion ClassNotFoundException.\n\n"
+                        + ex.getMessage()+ "\n\n"+ConexionMySql.class.getName(),
+                        "Error de conexion", JOptionPane.ERROR_MESSAGE);
             System.out.println("Error ClassNotFoundException: " 
                     + "\n Causa: "+ ex.getCause() 
                     + "\n Mensaje: " + ex.getMessage() 

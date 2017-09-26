@@ -5,6 +5,7 @@
  */
 package Ventanas;
 import Conexion.ConexionMySql;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -152,50 +153,58 @@ public class AccesoBbdd extends javax.swing.JFrame {
         if (acceso!=true) 
         {
             String cadena ="";
-            if (txtUsuario.getText() != null && txtContraseña.getPassword() != null)
+            if (txtUsuario.getText() != null && !txtUsuario.getText().equals("") )
             {
                 conexion = new ConexionMySql( txtUsuario.getText() , 
                         String.valueOf( txtContraseña.getPassword() ) );
-                
-                // recorre las bbdd encontradas y las añade al combobox
-                for (int i = 0; i < conexion.getNombreCatalogos().size(); i++) 
+                if ( ConexionMySql.errorConexion.equals("") )
                 {
-                    cadena = (String) conexion.getNombreCatalogos().get(i);
-                    cmbBbdd.addItem( cadena );
+                    // recorre las bbdd encontradas y las añade al combobox
+                    for (int i = 0; i < conexion.getNombreCatalogos().size(); i++) 
+                    {
+                        cadena = (String) conexion.getNombreCatalogos().get(i);
+                        cmbBbdd.addItem( cadena );
+                    }
+                    // a partir de aqui el acceso sera a bbdd seleccionada
+                    acceso=true;
+                    lblDisponibles.setVisible(true);
+                    lblNombreBbdd.setVisible(true);
+                    txtBaseDatos.setVisible(true);
+                    cmbBbdd.setVisible(true);
+                    Principal.bbddSeleccionada = cmbBbdd.getSelectedItem().toString() ;
                 }
-                // a partir de aqui el acceso sera a bbdd seleccionada
-                acceso=true;
-                lblDisponibles.setVisible(true);
-                lblNombreBbdd.setVisible(true);
-                txtBaseDatos.setVisible(true);
-                cmbBbdd.setVisible(true);
-                Principal.bbddSeleccionada = cmbBbdd.getSelectedItem().toString() ;
             }    
             else 
             {
-                System.out.println("faltan datos");
+                JOptionPane.showMessageDialog(null, "Debe introducir un usuario", 
+                        "Faltan Datos",JOptionPane.ERROR_MESSAGE);
             }
         } 
-        else if (txtBaseDatos.getText() != null && txtUsuario.getText() != null 
-                && txtContraseña.getPassword() != null) 
+        else if (txtBaseDatos.getText() != null && txtUsuario.getText() != null ) 
         {
             // establezco una conexion con los valores introducidos
             conexion = new ConexionMySql( txtBaseDatos.getText(), 
                     txtUsuario.getText() , 
                     String.valueOf( txtContraseña.getPassword() ) );
-            conexion2 = conexion;
-            Principal.bbddSeleccionada = cmbBbdd.getSelectedItem().toString() ;
-            System.out.println("acceso bbdd seleccionada: " + cmbBbdd.getSelectedItem().toString());
+            if ( ConexionMySql.errorConexion.equals("") )
+            {
+                conexion2 = conexion;
+                Principal.bbddSeleccionada = cmbBbdd.getSelectedItem().toString() ;
+                System.out.println("acceso bbdd seleccionada: " 
+                        + cmbBbdd.getSelectedItem().toString());
+                JOptionPane.showMessageDialog(null, "Ha accedido a la bbdd: " 
+                        + Principal.bbddSeleccionada, "Acceso", 
+                        JOptionPane.INFORMATION_MESSAGE);
+                this.setVisible(false);
 
-            this.setVisible(false);
-            
-            // desconecto la conexion porque tengo guardados los valores en el formulario
-            conexion.getDesconexion();
-            
+                // desconecto la conexion porque tengo guardados los valores en el formulario
+                conexion.getDesconexion();
+            }
         } else {
-            System.out.println("faltan datos");
-        }
-        
+             JOptionPane.showMessageDialog(null, 
+                     "Debe introducir un usuario y seleccinar una bbdd.", 
+                     "Faltan Datos",JOptionPane.ERROR);
+        }  
     }//GEN-LAST:event_btnAccesoActionPerformed
 
     
@@ -211,7 +220,7 @@ public class AccesoBbdd extends javax.swing.JFrame {
 
     private void jLabelIconoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelIconoMousePressed
         // TODO add your handling code here:
-        txtBaseDatos.setText("mibasedatos");
+        txtBaseDatos.setText("");
         txtUsuario.setText("root");
         txtContraseña.setText("12345.Aaa");
     }//GEN-LAST:event_jLabelIconoMousePressed
