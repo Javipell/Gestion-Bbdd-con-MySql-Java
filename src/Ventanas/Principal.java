@@ -29,7 +29,7 @@ public class Principal extends javax.swing.JFrame {
     public ConexionMySql conexion;
     public static String bbddSeleccionada = "";
     public static String tablaSeleccionada = "";
-    public static String[][] tiposCampos; // = new String[100][2];
+    public static String[][] tiposCampos; 
 
     /**
      * Creates new form Principal
@@ -618,31 +618,46 @@ public class Principal extends javax.swing.JFrame {
     {
         Boolean respuesta = false;
 
-        if (!AccesoBbdd.txtBaseDatos.getText().equals("") 
-                && !AccesoBbdd.txtUsuario.getText().equals("")
-                && !String.valueOf( AccesoBbdd.txtContraseña.getPassword() ).equals("") ) 
+        try
         {
-            // creo una conexion con los valores ocultos del formulario principal
-            conexion = new ConexionMySql(AccesoBbdd.txtBaseDatos.getText(),
-                    AccesoBbdd.txtUsuario.getText(), 
-                    String.valueOf( AccesoBbdd.txtContraseña.getPassword() ) );
-            int valor = conexion.getNombreTablas().size();
-            if (valor>0)
+            if ( !"".equals(AccesoBbdd.txtBaseDatos.getText()) 
+                    && AccesoBbdd.txtBaseDatos.getText() != null
+                    && !"".equals(AccesoBbdd.txtUsuario.getText())
+                    && AccesoBbdd.txtUsuario.getText() != null)
             {
-                if (tablaSeleccionada!="")
+                // creo una conexion con los valores ocultos del formulario principal
+                conexion = new ConexionMySql(AccesoBbdd.txtBaseDatos.getText(),
+                        AccesoBbdd.txtUsuario.getText(), 
+                        String.valueOf( AccesoBbdd.txtContraseña.getPassword() ) );
+                if ( ConexionMySql.errorConexion.equals("") )
                 {
-                    respuesta = true;
-                } 
-                else
-                {
-                    Tablas frmTablas = new Tablas();
-                    frmTablas.setVisible(true);
+                    int valor = conexion.getNombreTablas().size();
+                    if (valor>0)
+                    {
+                        if (!"".equals(tablaSeleccionada))
+                        {
+                            respuesta = true;
+                        } 
+                        else
+                        {
+                            Tablas frmTablas = new Tablas();
+                            frmTablas.setVisible(true);
+                        }
+                    } 
+                    else
+                    {
+                        JOptionPane.showMessageDialog(null, "No hay tablas en esta base de datos");
+                    }
+                } else{
+                    JOptionPane.showMessageDialog(null, "Error: " + ConexionMySql.errorConexion);
                 }
-            } 
-            else
-            {
-                JOptionPane.showMessageDialog(null, "No hay tablas en esta base de datos");
             }
+        } 
+        catch (Exception ex)
+        {
+              JOptionPane.showMessageDialog(null, "Debe introducir al menos "
+                      + "una Bbdd y un usuario.\n\n Menu : Archivo - Acceso Bbdd", "Valores nulos", 
+                      JOptionPane.ERROR_MESSAGE);
         }
         return respuesta;
     }

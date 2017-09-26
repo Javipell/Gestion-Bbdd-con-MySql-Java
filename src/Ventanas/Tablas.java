@@ -42,6 +42,8 @@ public class Tablas extends javax.swing.JFrame
             
             boton.setActionCommand( boton.getName() );
             boton.setFont(new java.awt.Font("Lucida Grande", 1, 16));
+            boton.setForeground(new java.awt.Color(255, 255, 255));
+
 
             //<editor-fold defaultstate="collapsed" desc="Instrucciones de implementacion">
             /* 
@@ -129,8 +131,11 @@ public class Tablas extends javax.swing.JFrame
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jPanel1.setBackground(new java.awt.Color(0, 51, 102));
+        jPanel1.setForeground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new java.awt.GridLayout(0, 1));
         jScrollPane1.setViewportView(jPanel1);
 
@@ -143,7 +148,7 @@ public class Tablas extends javax.swing.JFrame
         jLabel2.setOpaque(true);
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 23, -1, -1));
 
-        btnSalir.setBackground(new java.awt.Color(0, 153, 204));
+        btnSalir.setBackground(new java.awt.Color(0, 0, 153));
         btnSalir.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
         btnSalir.setForeground(new java.awt.Color(255, 255, 255));
         btnSalir.setText("VOLVER");
@@ -152,7 +157,7 @@ public class Tablas extends javax.swing.JFrame
                 btnSalirActionPerformed(evt);
             }
         });
-        getContentPane().add(btnSalir, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 300, -1, -1));
+        getContentPane().add(btnSalir, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 300, -1, -1));
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/azul.jpg"))); // NOI18N
