@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
@@ -30,6 +32,8 @@ public class Principal extends javax.swing.JFrame {
     public static String bbddSeleccionada = "";
     public static String tablaSeleccionada = "";
     public static String[][] tiposCampos; 
+    public static ResultSet listaDatos = null;
+    public static int filaDatos = 0;
 
     /**
      * Creates new form Principal
@@ -50,8 +54,6 @@ public class Principal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jMenu1 = new javax.swing.JMenu();
-        jMenuItem3 = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -71,12 +73,10 @@ public class Principal extends javax.swing.JFrame {
         jMenuAñadirRegistro2 = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         jMenuItemListadoId = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuAcerca = new javax.swing.JMenuItem();
         menuSalir = new javax.swing.JMenu();
         jMenuSalir = new javax.swing.JMenuItem();
-
-        jMenu1.setText("jMenu1");
-
-        jMenuItem3.setText("jMenuItem3");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -96,12 +96,19 @@ public class Principal extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        jTable1.setShowGrid(true);
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 640, 370));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 640, 380));
 
+        jLabelFondo.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabelFondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/azul.jpg"))); // NOI18N
         getContentPane().add(jLabelFondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 690, 460));
         getContentPane().add(txtUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 100, -1));
@@ -182,6 +189,18 @@ public class Principal extends javax.swing.JFrame {
         jMenuGestion.add(jMenuItemListadoId);
 
         jMenuBar1.add(jMenuGestion);
+
+        jMenu1.setText("Acerca de");
+
+        jMenuAcerca.setText("Acerca de");
+        jMenuAcerca.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuAcercaActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuAcerca);
+
+        jMenuBar1.add(jMenu1);
 
         menuSalir.setText("Salir");
 
@@ -473,6 +492,40 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jMenuTablasActionPerformed
 
+    private void jMenuAcercaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuAcercaActionPerformed
+        
+        Acerca frmAcerca = new Acerca();
+        frmAcerca.setVisible(true);
+    }//GEN-LAST:event_jMenuAcercaActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        // TODO add your handling code here:
+        int row = jTable1.rowAtPoint(evt.getPoint());
+        int col = jTable1.columnAtPoint(evt.getPoint());
+        if (row >= 0 && col >= 0) 
+        {
+            JOptionPane.showMessageDialog(null, "selecciono row: "+ row );
+            filaDatos = row;
+            if (creaConexion())
+            {            
+                conexion.obtieneNombresCampos( tablaSeleccionada );
+                conexion.obtenerNombresColumnas(bbddSeleccionada, tablaSeleccionada);
+
+                AccesoBbdd.conexion2 = conexion;
+
+                Modificar frmModificar = null;
+                try 
+                {
+                    frmModificar = new Modificar();
+                } 
+                catch (SQLException ex) {
+                    Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                frmModificar.setVisible(true);
+            }
+        }
+    }//GEN-LAST:event_jTable1MouseClicked
+
     /**
      * Metodo listadDatos
      * comprueba que existe una conexion, recibe los datos de la consulta
@@ -488,6 +541,8 @@ public class Principal extends javax.swing.JFrame {
             ListaPersona lista = new ListaPersona();
             // recibe los datos de la consulta sql
             ResultSet listaPersona = lista.listadoTodosRegistros(sql);
+            // guardo los datos de la consulta en esta variable public static
+            listaDatos = listaPersona;
             
             int numeroRegistros = 0;
             
@@ -540,8 +595,19 @@ public class Principal extends javax.swing.JFrame {
                             + ex.getMessage());
                 }
 
-                JTable table = new JTable(filas, columnas);
-                jScrollPane1.setViewportView(table);
+                //JTable table = new JTable(filas, columnas);
+                jTable1 = new JTable(filas, columnas);
+                //jScrollPane1.setViewportView(table);
+                jScrollPane1.setViewportView(jTable1);
+                // creo un envento de raton sobre la tabla
+                jTable1.addMouseListener(new java.awt.event.MouseAdapter() 
+                {
+                    public void mouseClicked(java.awt.event.MouseEvent evt) 
+                    {
+                        jTable1MouseClicked(evt);
+                    }
+                });
+                
             } else {
                 JOptionPane.showMessageDialog(null, "Actualmente no existen registros" 
                         + "\nTabla seleccionada: " + tablaSeleccionada,
@@ -666,8 +732,6 @@ public class Principal extends javax.swing.JFrame {
     {
         // 2a forma de recorrer el HashMap
         HashMap hm = conexion.getNombreCamposTipos();
-        // no se puede definir el array aqui por que al salir pierde los datos
-        // como se define un array goblal sin conocer su dimension????
         tiposCampos = new String[hm.size()][2];
         
         Iterator iterador = conexion.getNombreCamposTipos().entrySet().iterator();
@@ -682,14 +746,11 @@ public class Principal extends javax.swing.JFrame {
             String tipCampo = String.valueOf( campos2.getValue() ) ;
             tiposCampos[i][0] = nomCampo;
             tiposCampos[i][1] = tipCampo;
-            // TODO ........
-            // LOS DESORDENA
-            // COMO ORDENARLOS ???
             System.out.println(""+i+" campo "+ tiposCampos[i][0]+" - "+tiposCampos[i][1]);
             i++;
         }
     }
-
+    
     /**
      * @param args the command line arguments
      */
@@ -729,12 +790,12 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelFondo;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuItem jMenuAccesoBbdd;
+    private javax.swing.JMenuItem jMenuAcerca;
     private javax.swing.JMenuItem jMenuAñadirRegistro;
     private javax.swing.JMenuItem jMenuAñadirRegistro2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuBuscar;
     private javax.swing.JMenu jMenuGestion;
-    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItemListado;
     private javax.swing.JMenuItem jMenuItemListadoId;
     private javax.swing.JMenuItem jMenuSalir;

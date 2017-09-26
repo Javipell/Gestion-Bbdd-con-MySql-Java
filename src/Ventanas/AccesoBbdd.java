@@ -141,6 +141,7 @@ public class AccesoBbdd extends javax.swing.JFrame {
         lblNombreBbdd.setText("Nombre BBDD ");
         getContentPane().add(lblNombreBbdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 260, -1, -1));
 
+        jLabelFondo.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabelFondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/azul.jpg"))); // NOI18N
         getContentPane().add(jLabelFondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 402, 433));
 

@@ -14,14 +14,18 @@ import javax.swing.JOptionPane;
 /**
  * Clase ConexionMySql
  * 
- * @author javier Pellicena 
- * email javipell@gmail.com
+ * @author <h1>javier Pellicena</h1>  Email <h1>javipell@gmail.com</h1>
  */
 public class ConexionMySql 
 {
     
     public int numeroResultados;
     public static String errorConexion = "";
+    // instancia de ClassCampos donde se guardan ordenados 
+    // los nombres y tipos de los campos
+    public ClassCampos ccampos;
+    public ArrayList<ClassCampos> aCCampos = new ArrayList<ClassCampos>();
+    
     private String Bbdd ; 
     private String url ; 
     private String login ; 
@@ -92,9 +96,9 @@ public class ConexionMySql
     /**
      * Metodo constructor ConexionMySql
      * Recibe por parametros los valores de la conexion y la establece
-     * @param base
-     * @param usuario
-     * @param pass 
+     * @param base tipo String
+     * @param usuario tipo String
+     * @param pass  tipo String
      */
     public ConexionMySql( String base, String usuario, String pass)
     {
@@ -194,17 +198,6 @@ public class ConexionMySql
             estado = this.getConexion().createStatement();
             ResultSet resultado = estado.executeQuery(sql);
             cuentaRegistros( resultado );
-            /*try 
-            {
-                resultado.last(); // va al ultimo registro
-                numeroResultados = resultado.getRow();
-                resultado.beforeFirst();
-                System.out.println("numero  resultados "+ numeroResultados);
-            } 
-            catch (SQLException ex) 
-            {
-                System.out.println("Error en el conteo. \n" +ex.getMessage());
-            }*/
         } 
         catch (Exception ex) 
         {
@@ -261,6 +254,7 @@ public class ConexionMySql
      */
     public void obtenerNombresColumnas( String catalogo, String tabla)
     {
+        int contador = 0;
         try 
         {
             // El contenido de cada columna del ResultSet se puede ver en
@@ -270,11 +264,21 @@ public class ConexionMySql
             
             while (resultado.next()) 
             {
-                // La 4 corresponde al TABLE_NAME
+                // La 4 corresponde al COLUMN_NAME
                 System.out.println("columna " + resultado.getString(4));
                 // y la 6 al TYPE_NAME
                 System.out.println("tipo " + resultado.getString(6));
                 nombreCamposTipos.put(resultado.getString(4), resultado.getString(6) );
+                /*
+                 * creo un objeto de ClassCampos donde guardo el orden, 
+                 * nombre y tipo de campo de la tabla
+                */
+                ccampos = new ClassCampos(contador, 
+                        resultado.getString(4), 
+                        resultado.getString("TYPE_NAME"));
+                aCCampos.add(ccampos);
+                contador++;
+
             }
             // 1a forma de recorrer el HashMap con un iterator
             String clave ;
@@ -374,7 +378,7 @@ public class ConexionMySql
     public void obtieneNombresCampos( String tabla)
     {
         String sqlCampos = "SHOW COLUMNS FROM " + tabla;
-        
+
         Statement estado ;
         ResultSet resultado = null;
         // vacia nombreCampos
@@ -534,6 +538,11 @@ public class ConexionMySql
     {
         return nombreCampos;
     }
+
+    public ArrayList getaCCampos() {
+        return aCCampos;
+    }
+    
     public HashMap getNombreCamposTipos() {
         return nombreCamposTipos;
     }

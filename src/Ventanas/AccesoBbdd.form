@@ -254,6 +254,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelFondo">
       <Properties>
+        <Property name="horizontalAlignment" type="int" value="11"/>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
           <Image iconType="3" name="/Imagenes/azul.jpg"/>
         </Property>
