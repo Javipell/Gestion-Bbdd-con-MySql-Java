@@ -100,6 +100,7 @@ public class Tablas extends javax.swing.JFrame
                     System.out.println("evento seleccinado " + evt.getActionCommand());
                     */
                     Principal.tablaSeleccionada= evt.getActionCommand();
+                    btnSalirActionPerformed(evt);
                     
                 }
             });
@@ -124,29 +125,11 @@ public class Tablas extends javax.swing.JFrame
     private void initComponents() {
 
         buttonGroupTablas = new javax.swing.ButtonGroup();
+        btnSalir = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        btnSalir = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setUndecorated(true);
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jPanel1.setBackground(new java.awt.Color(0, 51, 102));
-        jPanel1.setForeground(new java.awt.Color(255, 255, 255));
-        jPanel1.setLayout(new java.awt.GridLayout(0, 1));
-        jScrollPane1.setViewportView(jPanel1);
-
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 60, 360, 232));
-
-        jLabel2.setBackground(new java.awt.Color(0, 51, 204));
-        jLabel2.setFont(new java.awt.Font("Lucida Grande", 1, 16)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Seleccione la tabla con la que desee trabajar");
-        jLabel2.setOpaque(true);
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
 
         btnSalir.setBackground(new java.awt.Color(0, 0, 153));
         btnSalir.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
@@ -157,12 +140,29 @@ public class Tablas extends javax.swing.JFrame
                 btnSalirActionPerformed(evt);
             }
         });
-        getContentPane().add(btnSalir, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 300, -1, -1));
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jPanel1.setBackground(new java.awt.Color(0, 51, 102));
+        jPanel1.setForeground(new java.awt.Color(255, 255, 255));
+        jPanel1.setLayout(new java.awt.GridLayout(0, 1));
+        jScrollPane1.setViewportView(jPanel1);
+
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, 340, 232));
+
+        jLabel2.setBackground(new java.awt.Color(0, 51, 204));
+        jLabel2.setFont(new java.awt.Font("Lucida Grande", 1, 20)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("<html>Listado de las tablas de la BBDD<br>Seleccione la tabla con la que <br>desee trabajar</html>");
+        jLabel2.setOpaque(true);
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/azul.jpg"))); // NOI18N
         jLabel1.setText("jLabel1");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 350));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 430, 420));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -170,14 +170,15 @@ public class Tablas extends javax.swing.JFrame
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
 
         System.out.println("tabla seleccionada antes salir "+Principal.tablaSeleccionada);
-        if ( !Principal.tablaSeleccionada.equals("") ) 
+        if ( !Principal.tablaSeleccionada.equals("") )
         {
             // oculta la ventana
             //this.setVisible(false);
             // cierra la ventana
+            Principal.txtNombreTabla.setText( Principal.tablaSeleccionada );
             this.dispose();
         }
-        else 
+        else
         {
             JOptionPane.showMessageDialog(null, "Debe seleccionar una tabla.");
         }

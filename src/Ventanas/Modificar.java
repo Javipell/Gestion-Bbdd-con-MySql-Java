@@ -254,10 +254,11 @@ public class Modificar extends javax.swing.JFrame {
         String sql = "UPDATE "+ Principal.tablaSeleccionada +" SET ";
         // TELEFONO='111', NOMBRE='ASDFASD', EDAD='21' WHERE ID='25';";
         
-        for (int i = 0; i < valoresModificados.length; i++) 
+        for (int i = 0; i <= valoresModificados.length+1; i++) 
         {
             sql += valoresModificados[1][i] +"='" + valoresModificados[2][i];
-            if ( i < (valoresModificados.length - 1) ) 
+            System.out.println("sql1 "+sql);
+            if ( i <= (valoresModificados.length ) ) 
             { 
                 sql += "', ";
             }

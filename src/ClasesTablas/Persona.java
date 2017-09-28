@@ -107,9 +107,7 @@ public class Persona
         return casadoPersona;
     }
 
-    /**
-     * @param casadoPersosna the casadoPersosna to set
-     */
+
     public void setCasadoPersona(Boolean casadoPersona) {
         this.casadoPersona = casadoPersona;
     }

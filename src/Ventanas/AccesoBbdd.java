@@ -229,6 +229,7 @@ public class AccesoBbdd extends javax.swing.JFrame {
     private void cmbBbddItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbBbddItemStateChanged
         // TODO add your handling code here:
         txtBaseDatos.setText( cmbBbdd.getSelectedItem().toString() );
+        Principal.txtNombreBbdd.setText( txtBaseDatos.getText());
         Principal.bbddSeleccionada = txtBaseDatos.getText() ;
     }//GEN-LAST:event_cmbBbddItemStateChanged
 

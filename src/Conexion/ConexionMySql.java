@@ -251,6 +251,8 @@ public class ConexionMySql
      * 
      * http://programandoointentandolo.com/2013/02/ejemplo-de-uso-de-hashmap-en-java-2.html
      * 
+     * @param catalogo
+     * @param tabla
      */
     public void obtenerNombresColumnas( String catalogo, String tabla)
     {
@@ -310,7 +312,7 @@ public class ConexionMySql
      * Metodo muestraTablas
      * Obtiene los nombres de las tablas de la base de datos
      * y los guarda en un ArrayList nombreTablas
-     * @see http://www.chuidiang.org/java/mysql/ResultSet-DataBase-MetaData.php
+     * @see text http://www.chuidiang.org/java/mysql/ResultSet-DataBase-MetaData.php
      * 
      * donde los cuatro parámetros que hemos pasado son:
      * 1- catálogo de la base de datos. Al poner null, estamos preguntando por 

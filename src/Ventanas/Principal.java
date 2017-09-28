@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Ventanas;
 
 import ClasesTablas.Persona;
@@ -24,7 +20,7 @@ import javax.swing.JTable;
 
 /**
  *
- * @author javier
+ * @author Javier Pellicena Email: javipell@gmail.com
  */
 public class Principal extends javax.swing.JFrame {
 
@@ -57,10 +53,11 @@ public class Principal extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        lblNombreBbdd = new javax.swing.JLabel();
+        txtNombreBbdd = new javax.swing.JTextField();
+        lblNombreTabla = new javax.swing.JLabel();
+        txtNombreTabla = new javax.swing.JTextField();
         jLabelFondo = new javax.swing.JLabel();
-        txtUsuario = new javax.swing.JTextField();
-        txtBase = new javax.swing.JTextField();
-        txtContraseña = new javax.swing.JTextField();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuArchivo = new javax.swing.JMenu();
         menuAbrirBbdd = new javax.swing.JMenuItem();
@@ -69,9 +66,9 @@ public class Principal extends javax.swing.JFrame {
         jMenuTablas = new javax.swing.JMenuItem();
         jMenuItemListado = new javax.swing.JMenuItem();
         jMenuBuscar = new javax.swing.JMenuItem();
-        jMenuAñadirRegistro = new javax.swing.JMenuItem();
         jMenuAñadirRegistro2 = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        jMenuAñadirRegistro = new javax.swing.JMenuItem();
         jMenuItemListadoId = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
         jMenuAcerca = new javax.swing.JMenuItem();
@@ -108,12 +105,35 @@ public class Principal extends javax.swing.JFrame {
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 640, 380));
 
+        lblNombreBbdd.setBackground(new java.awt.Color(0, 0, 153));
+        lblNombreBbdd.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
+        lblNombreBbdd.setForeground(new java.awt.Color(255, 255, 255));
+        lblNombreBbdd.setText("Nombre BBDD ");
+        getContentPane().add(lblNombreBbdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 420, -1, -1));
+
+        txtNombreBbdd.setBackground(new java.awt.Color(0, 0, 153));
+        txtNombreBbdd.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
+        txtNombreBbdd.setForeground(new java.awt.Color(255, 255, 255));
+        txtNombreBbdd.setText("NINGUNA");
+        txtNombreBbdd.setEnabled(false);
+        getContentPane().add(txtNombreBbdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 420, 160, -1));
+
+        lblNombreTabla.setBackground(new java.awt.Color(0, 0, 153));
+        lblNombreTabla.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
+        lblNombreTabla.setForeground(new java.awt.Color(255, 255, 255));
+        lblNombreTabla.setText("Nombre Tabla ");
+        getContentPane().add(lblNombreTabla, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 420, -1, -1));
+
+        txtNombreTabla.setBackground(new java.awt.Color(0, 0, 153));
+        txtNombreTabla.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
+        txtNombreTabla.setForeground(new java.awt.Color(255, 255, 255));
+        txtNombreTabla.setText("NINGUNA");
+        txtNombreTabla.setEnabled(false);
+        getContentPane().add(txtNombreTabla, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 420, 160, -1));
+
         jLabelFondo.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabelFondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/azul.jpg"))); // NOI18N
         getContentPane().add(jLabelFondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 690, 460));
-        getContentPane().add(txtUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 100, -1));
-        getContentPane().add(txtBase, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 10, 100, -1));
-        getContentPane().add(txtContraseña, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 10, 100, -1));
 
         jMenuBar1.setForeground(new java.awt.Color(0, 0, 204));
 
@@ -163,15 +183,7 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenuGestion.add(jMenuBuscar);
 
-        jMenuAñadirRegistro.setText("Añadir Registro");
-        jMenuAñadirRegistro.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuAñadirRegistroActionPerformed(evt);
-            }
-        });
-        jMenuGestion.add(jMenuAñadirRegistro);
-
-        jMenuAñadirRegistro2.setText("Añadir Registro2");
+        jMenuAñadirRegistro2.setText("Añadir Registro");
         jMenuAñadirRegistro2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuAñadirRegistro2ActionPerformed(evt);
@@ -180,7 +192,17 @@ public class Principal extends javax.swing.JFrame {
         jMenuGestion.add(jMenuAñadirRegistro2);
         jMenuGestion.add(jSeparator1);
 
+        jMenuAñadirRegistro.setText("Añadir Registro old");
+        jMenuAñadirRegistro.setEnabled(false);
+        jMenuAñadirRegistro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuAñadirRegistroActionPerformed(evt);
+            }
+        });
+        jMenuGestion.add(jMenuAñadirRegistro);
+
         jMenuItemListadoId.setText("Listado por  Id");
+        jMenuItemListadoId.setEnabled(false);
         jMenuItemListadoId.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemListadoIdActionPerformed(evt);
@@ -521,6 +543,7 @@ public class Principal extends javax.swing.JFrame {
                 catch (SQLException ex) {
                     Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                jTable1.setVisible(false);
                 frmModificar.setVisible(true);
             }
         }
@@ -804,11 +827,12 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JLabel lblNombreBbdd;
+    private javax.swing.JLabel lblNombreTabla;
     private javax.swing.JMenuItem menuAbrirBbdd;
     private javax.swing.JMenu menuArchivo;
     private javax.swing.JMenu menuSalir;
-    public static javax.swing.JTextField txtBase;
-    public static javax.swing.JTextField txtContraseña;
-    public static javax.swing.JTextField txtUsuario;
+    public static javax.swing.JTextField txtNombreBbdd;
+    public static javax.swing.JTextField txtNombreTabla;
     // End of variables declaration//GEN-END:variables
 }
