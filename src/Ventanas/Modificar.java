@@ -6,14 +6,14 @@
 package Ventanas;
 
 import Conexion.ClassCampos;
-import Conexion.ConexionMySql;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JLabel;
-import javax.swing.JTextArea;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 /**
  *
@@ -21,6 +21,8 @@ import javax.swing.JTextArea;
  */
 public class Modificar extends javax.swing.JFrame {
 
+    public String[][] valoresModificados ;
+    
     /**
      * Creates new form Modificar
      */
@@ -31,6 +33,8 @@ public class Modificar extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         
         ponerCampos();
+        
+        //setJTexFieldChanged(jTextField1);
     }
     
     public void ponerCampos() throws SQLException
@@ -38,23 +42,8 @@ public class Modificar extends javax.swing.JFrame {
         ClassCampos classCampos = new ClassCampos();
         ArrayList <ClassCampos> arrayCamposConexion = AccesoBbdd.conexion2.getaCCampos();
         ResultSet datos = Principal.listaDatos;
-        
-        int numeroRegistros = 0;
-
-        // calcula el numero de registros devueltos por la consulta
-        try 
-        {
-            datos.last(); // va al ultimo registro
-            numeroRegistros = datos.getRow();
-            datos.beforeFirst(); // vuelve al primero
-        } 
-        catch (SQLException ex) 
-        {
-            System.out.println("Error en el conteo. \n" +ex.getMessage());
-        }
-            
+        valoresModificados = new String[4][ arrayCamposConexion.size() ];    
         int fila = Principal.filaDatos;
-        System.out.println("la fila "+ fila + " registros  "+ numeroRegistros);
         //<editor-fold defaultstate="collapsed" desc="Cabezera de la tabla">
         
         JLabel etiqueta0 = new JLabel();
@@ -80,37 +69,82 @@ public class Modificar extends javax.swing.JFrame {
             JLabel etiqueta3 = new JLabel();
             etiqueta3.setText( classCampos.getNombreCampo() );
             etiqueta3.setFont(new java.awt.Font("Lucida Grande", 1, 16));
-            //etiqueta2.setForeground(new java.awt.Color(255, 255, 255));
-            //etiqueta.setBackground(new java.awt.Color(0, 0, 153));
 
             JLabel etiqueta4 = new JLabel();
             etiqueta4.setText("(" + classCampos.getTipoCampo() +")" );
             etiqueta4.setFont(new java.awt.Font("Lucida Grande", 1, 12));
-            //etiqueta2.setForeground(new java.awt.Color(255, 255, 255));
             
-            JTextArea texto1 = new JTextArea();
+            //JTextArea texto1 = new JTextArea();
+            JTextField texto1 = new JTextField( classCampos.getNombreCampo() );
             String valor = "";
             int x = 0;
+            datos.beforeFirst(); // vuelve al primero
+            // recorre los registros devueltos por la consulta
             while (datos.next())
             {
-                System.out.println("-- fila "+x);
+                // cuando la posicion del registros es igual a la fila que
+                // queremos modificar guarda en un array el nombre del campo 
+                // y el valor devuelto por la consulta
                 if (x==fila) 
                 {
                     valor = String.valueOf( datos.getString(i+1) ) ;
+                    valoresModificados[0][i] = String.valueOf( i ); // posicion
+                    valoresModificados[1][i] = classCampos.getNombreCampo() ; // nombre
+                    valoresModificados[2][i] = valor; // valor
+                    valoresModificados[3][i] = valor; // copia del valor
                 }
                 x++;
             }
-            datos.beforeFirst(); // vuelve al primero
+            // devuelve el puntero a la primera posicion de los resultados devueltos
+            // para poder volver a buscar
+            datos.beforeFirst(); 
+            // al nuevo JTextField el poner como valor el devuelto por la consulta
             texto1.setText( valor );
+            // cambio la fuente y el tamaño
             texto1.setFont(new java.awt.Font("Lucida Grande", 1, 14));
-            //texto.setForeground(new java.awt.Color(255, 255, 255));
+            // cambio el nombre del campo por el nombre de la columna de la consulta
+            texto1.setName( classCampos.getNombreCampo() ) ;
+            // añado un evento para cuando el usuario cambie el valor devuelto por la consulta
+            texto1.addActionListener(new java.awt.event.ActionListener() 
+            {
+                public void actionPerformed(java.awt.event.ActionEvent evt) 
+                {
+                    texto1ActionPerformed(evt);
+                }
+                private void texto1ActionPerformed(java.awt.event.ActionEvent evt) 
+                {
+                    // recorro el array de los valores que quiero modificar
+                    for (int j = 0; j < valoresModificados[0].length; j++) 
+                    {
+                        // busco en el array el campo que quiero modificar 
+                        if (texto1.getName().equals( valoresModificados[1][j]))
+                        {
+                            System.out.println("logitud "+valoresModificados[0].length
+                                + " campo "+ valoresModificados[0][j] 
+                                + " " + valoresModificados[1][j] 
+                                + " " + valoresModificados[2][j]);
+                            // si el valor original ha cambiado ...
+                            if (!texto1.getText().equals(valoresModificados[2][j]))
+                            {
+                                // actualizo el array con el nuevo valor
+                                valoresModificados[2][j] = texto1.getText();
+                                System.out.println("logitud "+valoresModificados[0].length
+                                + " campo "+ valoresModificados[0][j] 
+                                + " " + valoresModificados[1][j] 
+                                + " " + valoresModificados[2][j]);
+                            }
+                        }
+                    }
+                }
+            });
             
             jPanel1.add(etiqueta3);
             jPanel1.add(etiqueta4);
             jPanel1.add(texto1);
+            
         }
     }
-
+       
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -124,12 +158,13 @@ public class Modificar extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuCancelar = new javax.swing.JMenuItem();
+        jMenuGuardar = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuSalir = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(0, 51, 153));
@@ -144,25 +179,34 @@ public class Modificar extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Lucida Console", 1, 18)); // NOI18N
         jLabel2.setText("PARA GUARDAR : MENU CAMBIOS - GUARDAR");
 
+        jLabel3.setFont(new java.awt.Font("Lucida Bright", 1, 32)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(0, 0, 255));
+        jLabel3.setText("<html>Pulse INTRO cada vez <br>que realice un cambio </html>");
+
         jMenu1.setText("Cambios");
 
-        jMenuItem2.setText("Cancelar");
-        jMenu1.add(jMenuItem2);
+        jMenuCancelar.setText("Cancelar");
+        jMenu1.add(jMenuCancelar);
 
-        jMenuItem3.setText("Guardar");
-        jMenu1.add(jMenuItem3);
+        jMenuGuardar.setText("Guardar");
+        jMenuGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuGuardarActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuGuardar);
 
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Salir");
 
-        jMenuItem1.setText("Salir");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        jMenuSalir.setText("Salir");
+        jMenuSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                jMenuSalirActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem1);
+        jMenu2.add(jMenuSalir);
 
         jMenuBar1.add(jMenu2);
 
@@ -177,8 +221,11 @@ public class Modificar extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
                     .addComponent(jLabel1)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 437, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(15, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 437, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(36, 36, 36)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -187,18 +234,46 @@ public class Modificar extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(76, 76, 76))
+                .addGap(26, 26, 26)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        // TODO add your handling code here:
+    private void jMenuSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuSalirActionPerformed
         this.setVisible(false);
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_jMenuSalirActionPerformed
+
+    
+    private void jMenuGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuGuardarActionPerformed
+        // TODO add your handling code here:
+        String sql = "UPDATE "+ Principal.tablaSeleccionada +" SET ";
+        // TELEFONO='111', NOMBRE='ASDFASD', EDAD='21' WHERE ID='25';";
+        
+        for (int i = 0; i < valoresModificados.length; i++) 
+        {
+            sql += valoresModificados[1][i] +"='" + valoresModificados[2][i];
+            if ( i < (valoresModificados.length - 1) ) 
+            { 
+                sql += "', ";
+            }
+            else
+            {
+                sql += "' ";
+            }
+        }
+        sql += " WHERE " + valoresModificados[1][0] + "=" + valoresModificados[3][0] + " ;";
+        System.out.println("sql: " + sql);
+        AccesoBbdd.conexion2.modificaRegistros(sql);
+        JOptionPane.showMessageDialog(null, "El registro ha sido actualizado."
+                ,"Actualizdo",JOptionPane.INFORMATION_MESSAGE);
+
+        this.setVisible(false);
+    }//GEN-LAST:event_jMenuGuardarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -242,12 +317,13 @@ public class Modificar extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuCancelar;
+    private javax.swing.JMenuItem jMenuGuardar;
+    private javax.swing.JMenuItem jMenuSalir;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables

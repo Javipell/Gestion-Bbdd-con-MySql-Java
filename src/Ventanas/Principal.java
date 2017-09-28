@@ -504,7 +504,7 @@ public class Principal extends javax.swing.JFrame {
         int col = jTable1.columnAtPoint(evt.getPoint());
         if (row >= 0 && col >= 0) 
         {
-            JOptionPane.showMessageDialog(null, "selecciono row: "+ row );
+            //JOptionPane.showMessageDialog(null, "selecciono row: "+ row );
             filaDatos = row;
             if (creaConexion())
             {            

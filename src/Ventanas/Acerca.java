@@ -33,6 +33,8 @@ public class Acerca extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextPane1 = new javax.swing.JTextPane();
         jLabelFondo = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
@@ -40,6 +42,7 @@ public class Acerca extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setFocusable(false);
+        setUndecorated(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabelIcono.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
@@ -49,33 +52,53 @@ public class Acerca extends javax.swing.JFrame {
                 jLabelIconoMousePressed(evt);
             }
         });
-        getContentPane().add(jLabelIcono, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 0, 360, 280));
+        getContentPane().add(jLabelIcono, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 0, 370, 280));
 
         jLabel2.setBackground(new java.awt.Color(0, 0, 153));
         jLabel2.setFont(new java.awt.Font("Lucida Console", 0, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("JAVIPELL@GMAIL.COM");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 370, -1, -1));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 180, -1, -1));
 
         jLabel3.setBackground(new java.awt.Color(0, 0, 153));
         jLabel3.setFont(new java.awt.Font("Lucida Console", 0, 18)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("GESTION DE BASES DE DATOS MYSQL");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 300, -1, -1));
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 110, -1, -1));
 
         jLabel4.setBackground(new java.awt.Color(0, 0, 153));
         jLabel4.setFont(new java.awt.Font("Lucida Console", 0, 18)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("(C) JAVIER PELLICENA");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 340, -1, -1));
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 150, -1, -1));
+
+        jScrollPane1.setBackground(new java.awt.Color(0, 0, 153));
+        jScrollPane1.setForeground(new java.awt.Color(255, 255, 255));
+        jScrollPane1.setViewportBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jScrollPane1.setAutoscrolls(true);
+        jScrollPane1.setEnabled(false);
+        jScrollPane1.setFont(new java.awt.Font("Lucida Console", 0, 14)); // NOI18N
+
+        jTextPane1.setEditable(false);
+        jTextPane1.setBackground(new java.awt.Color(255, 255, 255));
+        jTextPane1.setFont(new java.awt.Font("Lucida Console", 0, 15)); // NOI18N
+        jTextPane1.setForeground(new java.awt.Color(0, 0, 153));
+        jTextPane1.setText("Gestión de Bbdd MySql\n\nObjetivos:\n\n- Conectarse a Mysql.\n- Leer las bbdd existentes.\n- Selecionarlas  y leer sus tablas.\n- Seleccionar una tabla y leer los campos y los tipos de dato.\n- Realizar consultas. \n- Insertar registros.\n- Modificar valores.");
+        jTextPane1.setDragEnabled(false);
+        jTextPane1.setFocusable(false);
+        jScrollPane1.setViewportView(jTextPane1);
+
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 280, 710, 190));
 
         jLabelFondo.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabelFondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/azul.jpg"))); // NOI18N
         jLabelFondo.setText("GESTION DE BASES DE DATOS MYSQL");
-        getContentPane().add(jLabelFondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 402, 433));
+        getContentPane().add(jLabelFondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 780, 433));
 
         jMenu2.setText("Salir");
+        jMenu2.setFont(new java.awt.Font("Lucida Console", 0, 18)); // NOI18N
 
+        jMenuItem1.setFont(new java.awt.Font("Lucida Console", 0, 18)); // NOI18N
         jMenuItem1.setText("Salir");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -146,5 +169,7 @@ public class Acerca extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextPane jTextPane1;
     // End of variables declaration//GEN-END:variables
 }

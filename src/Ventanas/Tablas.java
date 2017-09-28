@@ -139,7 +139,7 @@ public class Tablas extends javax.swing.JFrame
         jPanel1.setLayout(new java.awt.GridLayout(0, 1));
         jScrollPane1.setViewportView(jPanel1);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 60, 315, 232));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 60, 360, 232));
 
         jLabel2.setBackground(new java.awt.Color(0, 51, 204));
         jLabel2.setFont(new java.awt.Font("Lucida Grande", 1, 16)); // NOI18N
@@ -162,7 +162,7 @@ public class Tablas extends javax.swing.JFrame
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/azul.jpg"))); // NOI18N
         jLabel1.setText("jLabel1");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 460, 350));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 350));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
