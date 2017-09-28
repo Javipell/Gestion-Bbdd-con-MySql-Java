@@ -60,8 +60,8 @@ public class Principal extends javax.swing.JFrame {
         jLabelFondo = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuArchivo = new javax.swing.JMenu();
-        menuAbrirBbdd = new javax.swing.JMenuItem();
         jMenuAccesoBbdd = new javax.swing.JMenuItem();
+        menuAbrirBbdd = new javax.swing.JMenuItem();
         jMenuGestion = new javax.swing.JMenu();
         jMenuTablas = new javax.swing.JMenuItem();
         jMenuItemListado = new javax.swing.JMenuItem();
@@ -139,14 +139,6 @@ public class Principal extends javax.swing.JFrame {
 
         menuArchivo.setText("Archivo");
 
-        menuAbrirBbdd.setText("Buscar Archivos");
-        menuAbrirBbdd.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuAbrirBbddActionPerformed(evt);
-            }
-        });
-        menuArchivo.add(menuAbrirBbdd);
-
         jMenuAccesoBbdd.setText("Acceso BBDD");
         jMenuAccesoBbdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -154,6 +146,14 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         menuArchivo.add(jMenuAccesoBbdd);
+
+        menuAbrirBbdd.setText("Buscar Archivos");
+        menuAbrirBbdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuAbrirBbddActionPerformed(evt);
+            }
+        });
+        menuArchivo.add(menuAbrirBbdd);
 
         jMenuBar1.add(menuArchivo);
 

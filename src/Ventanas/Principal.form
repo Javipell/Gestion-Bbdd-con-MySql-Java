@@ -14,20 +14,20 @@
             <Property name="text" type="java.lang.String" value="Archivo"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="menuAbrirBbdd">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Buscar Archivos"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuAbrirBbddActionPerformed"/>
-              </Events>
-            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuAccesoBbdd">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Acceso BBDD"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuAccesoBbddActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="menuAbrirBbdd">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Buscar Archivos"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuAbrirBbddActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>
