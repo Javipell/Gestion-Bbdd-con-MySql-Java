@@ -25,6 +25,7 @@ public class Modificar extends javax.swing.JFrame {
     
     /**
      * Creates new form Modificar
+     * @throws java.sql.SQLException
      */
     public Modificar() throws SQLException {
         initComponents();
@@ -42,7 +43,7 @@ public class Modificar extends javax.swing.JFrame {
         ClassCampos classCampos = new ClassCampos();
         ArrayList <ClassCampos> arrayCamposConexion = AccesoBbdd.conexion2.getaCCampos();
         ResultSet datos = Principal.listaDatos;
-        valoresModificados = new String[4][ arrayCamposConexion.size() ];    
+        valoresModificados = new String[9][ arrayCamposConexion.size() ];    
         int fila = Principal.filaDatos;
         //<editor-fold defaultstate="collapsed" desc="Cabezera de la tabla">
         
@@ -57,7 +58,7 @@ public class Modificar extends javax.swing.JFrame {
         JLabel etiqueta2 = new JLabel();
         etiqueta2.setText("VALOR" );
         etiqueta2.setFont(new java.awt.Font("Lucida Grande", 1, 14));
-
+        
         jPanel1.add(etiqueta0);
         jPanel1.add(etiqueta1);
         jPanel1.add(etiqueta2);
@@ -88,10 +89,16 @@ public class Modificar extends javax.swing.JFrame {
                 if (x==fila) 
                 {
                     valor = String.valueOf( datos.getString(i+1) ) ;
+                    valor = ("null".equals(valor) ) ? "" : valor ;
                     valoresModificados[0][i] = String.valueOf( i ); // posicion
                     valoresModificados[1][i] = classCampos.getNombreCampo() ; // nombre
                     valoresModificados[2][i] = valor; // valor
                     valoresModificados[3][i] = valor; // copia del valor
+                    valoresModificados[4][i] = classCampos.getAutoIncremento();
+                    valoresModificados[5][i] = String.valueOf( classCampos.getTamano() );
+                    valoresModificados[6][i] = String.valueOf( classCampos.getDecimales() );
+                    valoresModificados[7][i] = String.valueOf( classCampos.getNulo() );
+                    valoresModificados[8][i] = classCampos.getTipoCampo();
                 }
                 x++;
             }
@@ -104,6 +111,11 @@ public class Modificar extends javax.swing.JFrame {
             texto1.setFont(new java.awt.Font("Lucida Grande", 1, 14));
             // cambio el nombre del campo por el nombre de la columna de la consulta
             texto1.setName( classCampos.getNombreCampo() ) ;
+            // si el campo es autoincremental lo bloquea 
+            if ("YES".equals(valoresModificados[4][i]) )
+            {
+                texto1.setVisible(false);
+            }
             // añado un evento para cuando el usuario cambie el valor devuelto por la consulta
             texto1.addActionListener(new java.awt.event.ActionListener() 
             {
@@ -141,7 +153,6 @@ public class Modificar extends javax.swing.JFrame {
             jPanel1.add(etiqueta3);
             jPanel1.add(etiqueta4);
             jPanel1.add(texto1);
-            
         }
     }
        
@@ -183,11 +194,19 @@ public class Modificar extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(0, 0, 255));
         jLabel3.setText("<html>Pulse INTRO cada vez <br>que realice un cambio </html>");
 
-        jMenu1.setText("Cambios");
+        jMenuBar1.setForeground(new java.awt.Color(0, 51, 204));
 
+        jMenu1.setBackground(new java.awt.Color(0, 0, 0));
+        jMenu1.setText("Cambios");
+        jMenu1.setFont(new java.awt.Font("Lucida Grande", 0, 16)); // NOI18N
+
+        jMenuCancelar.setBackground(new java.awt.Color(0, 0, 0));
+        jMenuCancelar.setFont(new java.awt.Font("Lucida Grande", 0, 16)); // NOI18N
         jMenuCancelar.setText("Cancelar");
         jMenu1.add(jMenuCancelar);
 
+        jMenuGuardar.setBackground(new java.awt.Color(0, 0, 0));
+        jMenuGuardar.setFont(new java.awt.Font("Lucida Grande", 0, 16)); // NOI18N
         jMenuGuardar.setText("Guardar");
         jMenuGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -198,8 +217,12 @@ public class Modificar extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu1);
 
+        jMenu2.setBackground(new java.awt.Color(0, 0, 0));
         jMenu2.setText("Salir");
+        jMenu2.setFont(new java.awt.Font("Lucida Grande", 0, 16)); // NOI18N
 
+        jMenuSalir.setBackground(new java.awt.Color(0, 0, 0));
+        jMenuSalir.setFont(new java.awt.Font("Lucida Grande", 0, 16)); // NOI18N
         jMenuSalir.setText("Salir");
         jMenuSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -248,32 +271,152 @@ public class Modificar extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_jMenuSalirActionPerformed
 
-    
     private void jMenuGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuGuardarActionPerformed
         // TODO add your handling code here:
         String sql = "UPDATE "+ Principal.tablaSeleccionada +" SET ";
         // TELEFONO='111', NOMBRE='ASDFASD', EDAD='21' WHERE ID='25';";
         
-        for (int i = 0; i <= valoresModificados.length+1; i++) 
+        System.out.println("-----------------");
+        codigo:
         {
-            sql += valoresModificados[1][i] +"='" + valoresModificados[2][i];
-            System.out.println("sql1 "+sql);
-            if ( i <= (valoresModificados.length ) ) 
-            { 
-                sql += "', ";
-            }
-            else
+            boolean error = false;
+            for (int i = 0; i < valoresModificados[0].length; i++) 
             {
-                sql += "' ";
+                System.out.print("tipo " +valoresModificados[8][i]);
+                System.out.print(" campo "+valoresModificados[1][i]);
+                System.out.print(" nulo " + valoresModificados[7][i]);
+                System.out.println(" valor " +valoresModificados[2][i]);
+                // comprueba si el valor puede ser nulo 1 si 0 no
+                if ( !"1".equals(valoresModificados[7][i]) )
+                {
+                    if( ( "".equals(valoresModificados[2][i]) 
+                        || valoresModificados[2][i] == null ) )
+                    {
+                        error=true;
+                    }
+                }
+                if ( "INT".equals(valoresModificados[8][i]) )
+                {
+                    // si el campo esta vacio lo cambia por 0.0
+                    valoresModificados[2][i]= ("".equals(valoresModificados[2][i]) ) 
+                            ? "0" : valoresModificados[2][i] ;
+                    // comprueba si es un numero
+                    if (!Comunes.comprobar.isNumerico(valoresModificados[2][i] ) 
+                            || valoresModificados[2][i].isEmpty()) 
+                    {
+                        error=true;
+                    }
+                }
+                // si el tipo de dato es fecha
+                if ("DATE".equals(valoresModificados[8][i]) 
+                        || "DATETIME".equals(valoresModificados[8][i])) 
+                {
+                    
+                    if ( "1".equals(valoresModificados[7][i]) 
+                            && !Comunes.comprobar.isFecha(valoresModificados[2][i]) ) 
+                    {
+                        error=true; 
+                        //<editor-fold defaultstate="collapsed" desc="Formas de escribir if abreviados">
+                        
+                        /*
+                        *** 1a forma de escribirlo
+                        if ( "1".equals(valoresModificados[7][i]) )
+                        {
+                        if ("".equals(valoresModificados[2][i]))
+                        {
+                        error = false;
+                        }
+                        }
+                        
+                        *** 2a forma de escribirlo
+                        error = ( "1".equals(valoresModificados[7][i]) )
+                        && ("".equals(valoresModificados[2][i]))
+                        ? true : false;
+                        
+                        *** 3a forma de escribirlo
+                        error = ( "1".equals(valoresModificados[7][i]) )
+                        && ("".equals(valoresModificados[2][i]));
+                        */
+                        //</editor-fold>
+                    }
+                }
+                // si el tipo de campo es decimal
+                if ("DECIMAL".equals(valoresModificados[8][i]) ) 
+                {
+                    // si el campo esta vacio lo cambia por 0.0
+                    valoresModificados[2][i]= ("".equals(valoresModificados[2][i]) ) 
+                            ? "0.0" : valoresModificados[2][i] ;
+                    // comprueba si es decimal
+                    if (!Comunes.comprobar.isDecimal(valoresModificados[2][i])) 
+                    {
+                        error=true;
+                    }
+                }
+                // si se ha producido un error muestra mensaje y 
+                // no ejecuta la consulta
+                if (error) 
+                {
+                    JOptionPane.showMessageDialog(null, "El campo "
+                                + valoresModificados[1][i] + " no puede tener: '"
+                                + valoresModificados[2][i] + "' Es del tipo: " 
+                                + valoresModificados[8][i],
+                                "Valor Erroneo", JOptionPane.ERROR_MESSAGE);
+                    break codigo;
+                }
+                // para convertir un string en fecha para mysql
+                // SELECT  STR_TO_DATE(yourdatefield, '%m/%d/%Y') FROM yourtable
+                if ("DATE".equals(valoresModificados[8][i]) 
+                        || "DATETIME".equals(valoresModificados[8][i])) 
+                {
+                    if ( "1".equals(valoresModificados[7][i] ) 
+                            &&  !(valoresModificados[2][i].isEmpty())) 
+                    {
+                        sql += valoresModificados[1][i] 
+                            + "= STR_TO_DATE('" + valoresModificados[2][i]
+                            + "', '%m/%d/%Y') ";
+                    }
+                } else {
+                    sql += valoresModificados[1][i] +"='" + valoresModificados[2][i];
+                }
+                
+                // si no es el ultimo campo añade una coma
+                if ( i < valoresModificados[0].length-1  ) 
+                { 
+                    // si el tipo de campo es una fecha no añade comilla
+                    if ("DATE".equals(valoresModificados[8][i]) 
+                        || "DATETIME".equals(valoresModificados[8][i])) 
+                    {
+                        sql += ", ";
+                    } else {
+                        sql += "', ";
+                    }
+                }
+                else
+                {
+                    // si el tipo de campo es una fecha no añade comilla
+                    if ("DATE".equals(valoresModificados[8][i]) 
+                        || "DATETIME".equals(valoresModificados[8][i])) 
+                    {
+                        sql += " ";
+                    } else {
+                        sql += "' ";
+                    }
+                }
             }
-        }
-        sql += " WHERE " + valoresModificados[1][0] + "=" + valoresModificados[3][0] + " ;";
-        System.out.println("sql: " + sql);
-        AccesoBbdd.conexion2.modificaRegistros(sql);
-        JOptionPane.showMessageDialog(null, "El registro ha sido actualizado."
-                ,"Actualizdo",JOptionPane.INFORMATION_MESSAGE);
+            
+            sql = sql.trim();
+            // si el ultimo caracter es una coma la elimino
+            sql = ( ",".equals(sql.substring(sql.length()-1, sql.length() ) ) ) 
+                    ? sql.substring(0,sql.length()-1) : sql ;
+            
+            sql += " WHERE " + valoresModificados[1][0] + "='" + valoresModificados[3][0] + "' ;";
+            System.out.println("sql: " + sql);
+            AccesoBbdd.conexion2.modificaRegistros(sql);
+            JOptionPane.showMessageDialog(null, "El registro ha sido actualizado."
+                    ,"Actualizdo",JOptionPane.INFORMATION_MESSAGE);
 
-        this.setVisible(false);
+            this.setVisible(false);
+        }
     }//GEN-LAST:event_jMenuGuardarActionPerformed
 
     /**

@@ -6,6 +6,9 @@
       <SubComponents>
         <Menu class="javax.swing.JMenu" name="jMenu2">
           <Properties>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="cc" green="33" red="0" type="rgb"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Salir"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Lucida Console" size="18" style="0"/>
@@ -170,7 +173,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="99" green="0" red="0" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Gesti&#xf3;n de Bbdd MySql&#xa;&#xa;Objetivos:&#xa;&#xa;- Conectarse a Mysql.&#xa;- Leer las bbdd existentes.&#xa;- Selecionarlas  y leer sus tablas.&#xa;- Seleccionar una tabla y leer los campos y los tipos de dato.&#xa;- Realizar consultas. &#xa;- Insertar registros.&#xa;- Modificar valores."/>
+            <Property name="text" type="java.lang.String" value="Gesti&#xf3;n de Bbdd MySql&#xa;&#xa;Objetivos:&#xa;&#xa;- Conectarse a Mysql.&#xa;- Leer las bbdd existentes.&#xa;- Selecionarlas  y leer sus tablas.&#xa;- Seleccionar una tabla y leer los campos y los tipos de dato.&#xa;- Realizar consultas. &#xa;- Insertar registros.&#xa;- Modificar valores.&#xa;- Validar campos: Autoincremental, nulos, enteros, decimales"/>
             <Property name="dragEnabled" type="boolean" value="false"/>
             <Property name="focusable" type="boolean" value="false"/>
           </Properties>

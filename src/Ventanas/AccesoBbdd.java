@@ -58,7 +58,7 @@ public class AccesoBbdd extends javax.swing.JFrame {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         btnAcceso.setBackground(new java.awt.Color(0, 0, 204));
-        btnAcceso.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
+        btnAcceso.setFont(new java.awt.Font("Lucida Grande", 1, 16)); // NOI18N
         btnAcceso.setForeground(new java.awt.Color(255, 255, 255));
         btnAcceso.setLabel("ACCEDER");
         btnAcceso.addActionListener(new java.awt.event.ActionListener() {
@@ -172,6 +172,8 @@ public class AccesoBbdd extends javax.swing.JFrame {
                     lblNombreBbdd.setVisible(true);
                     txtBaseDatos.setVisible(true);
                     cmbBbdd.setVisible(true);
+                    btnAcceso.setBackground(new java.awt.Color(255,153,51));
+                    btnAcceso.setText("ENTRAR");
                     Principal.bbddSeleccionada = cmbBbdd.getSelectedItem().toString() ;
                 }
             }    
@@ -193,9 +195,9 @@ public class AccesoBbdd extends javax.swing.JFrame {
                 Principal.bbddSeleccionada = cmbBbdd.getSelectedItem().toString() ;
                 System.out.println("acceso bbdd seleccionada: " 
                         + cmbBbdd.getSelectedItem().toString());
-                JOptionPane.showMessageDialog(null, "Ha accedido a la bbdd: " 
+                /*JOptionPane.showMessageDialog(null, "Ha accedido a la bbdd: " 
                         + Principal.bbddSeleccionada, "Acceso", 
-                        JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.INFORMATION_MESSAGE);*/
                 this.setVisible(false);
 
                 // desconecto la conexion porque tengo guardados los valores en el formulario

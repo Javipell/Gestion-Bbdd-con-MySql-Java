@@ -15,6 +15,12 @@ import javax.swing.JOptionPane;
  * Clase ConexionMySql
  * 
  * @author <h1>javier Pellicena</h1>  Email <h1>javipell@gmail.com</h1>
+ * 
+ * Pendiente Conectar Sql Server
+ * http://acodigo.blogspot.com.es/2013/06/conectar-sql-server-con-java.html
+ * Pendiente conectar bbdd Access
+ * http://sandritascs.blogspot.com.es/2015/08/java-conectar-con-una-base-de-datos.html
+ * 
  */
 public class ConexionMySql 
 {
@@ -274,10 +280,15 @@ public class ConexionMySql
                 /*
                  * creo un objeto de ClassCampos donde guardo el orden, 
                  * nombre y tipo de campo de la tabla
+                 * si es autoincremental, cuantos decimales tiene y si permite nulos 
                 */
                 ccampos = new ClassCampos(contador, 
-                        resultado.getString(4), 
-                        resultado.getString("TYPE_NAME"));
+                        resultado.getString("COLUMN_NAME"), 
+                        resultado.getString("TYPE_NAME"), 
+                        resultado.getString("IS_AUTOINCREMENT"), 
+                        resultado.getInt("COLUMN_SIZE"),
+                        resultado.getInt("DECIMAL_DIGITS"), 
+                        resultado.getInt("NULLABLE"));
                 aCCampos.add(ccampos);
                 contador++;
 

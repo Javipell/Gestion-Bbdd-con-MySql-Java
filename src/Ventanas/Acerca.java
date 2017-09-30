@@ -83,7 +83,7 @@ public class Acerca extends javax.swing.JFrame {
         jTextPane1.setBackground(new java.awt.Color(255, 255, 255));
         jTextPane1.setFont(new java.awt.Font("Lucida Console", 0, 15)); // NOI18N
         jTextPane1.setForeground(new java.awt.Color(0, 0, 153));
-        jTextPane1.setText("Gestión de Bbdd MySql\n\nObjetivos:\n\n- Conectarse a Mysql.\n- Leer las bbdd existentes.\n- Selecionarlas  y leer sus tablas.\n- Seleccionar una tabla y leer los campos y los tipos de dato.\n- Realizar consultas. \n- Insertar registros.\n- Modificar valores.");
+        jTextPane1.setText("Gestión de Bbdd MySql\n\nObjetivos:\n\n- Conectarse a Mysql.\n- Leer las bbdd existentes.\n- Selecionarlas  y leer sus tablas.\n- Seleccionar una tabla y leer los campos y los tipos de dato.\n- Realizar consultas. \n- Insertar registros.\n- Modificar valores.\n- Validar campos: Autoincremental, nulos, enteros, decimales");
         jTextPane1.setDragEnabled(false);
         jTextPane1.setFocusable(false);
         jScrollPane1.setViewportView(jTextPane1);
@@ -95,6 +95,7 @@ public class Acerca extends javax.swing.JFrame {
         jLabelFondo.setText("GESTION DE BASES DE DATOS MYSQL");
         getContentPane().add(jLabelFondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 780, 433));
 
+        jMenu2.setForeground(new java.awt.Color(0, 51, 204));
         jMenu2.setText("Salir");
         jMenu2.setFont(new java.awt.Font("Lucida Console", 0, 18)); // NOI18N
 

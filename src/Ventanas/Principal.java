@@ -109,36 +109,39 @@ public class Principal extends javax.swing.JFrame {
         lblNombreBbdd.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
         lblNombreBbdd.setForeground(new java.awt.Color(255, 255, 255));
         lblNombreBbdd.setText("Nombre BBDD ");
-        getContentPane().add(lblNombreBbdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 420, -1, -1));
+        getContentPane().add(lblNombreBbdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 450, -1, -1));
 
         txtNombreBbdd.setBackground(new java.awt.Color(0, 0, 153));
-        txtNombreBbdd.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
+        txtNombreBbdd.setFont(new java.awt.Font("Lucida Grande", 1, 16)); // NOI18N
         txtNombreBbdd.setForeground(new java.awt.Color(255, 255, 255));
         txtNombreBbdd.setText("NINGUNA");
         txtNombreBbdd.setEnabled(false);
-        getContentPane().add(txtNombreBbdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 420, 160, -1));
+        getContentPane().add(txtNombreBbdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 450, 160, -1));
 
         lblNombreTabla.setBackground(new java.awt.Color(0, 0, 153));
         lblNombreTabla.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
         lblNombreTabla.setForeground(new java.awt.Color(255, 255, 255));
         lblNombreTabla.setText("Nombre Tabla ");
-        getContentPane().add(lblNombreTabla, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 420, -1, -1));
+        getContentPane().add(lblNombreTabla, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 450, -1, -1));
 
         txtNombreTabla.setBackground(new java.awt.Color(0, 0, 153));
-        txtNombreTabla.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
+        txtNombreTabla.setFont(new java.awt.Font("Lucida Grande", 1, 16)); // NOI18N
         txtNombreTabla.setForeground(new java.awt.Color(255, 255, 255));
         txtNombreTabla.setText("NINGUNA");
         txtNombreTabla.setEnabled(false);
-        getContentPane().add(txtNombreTabla, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 420, 160, -1));
+        getContentPane().add(txtNombreTabla, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 450, 160, -1));
 
         jLabelFondo.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabelFondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/azul.jpg"))); // NOI18N
-        getContentPane().add(jLabelFondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 690, 460));
+        getContentPane().add(jLabelFondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 690, 480));
 
         jMenuBar1.setForeground(new java.awt.Color(0, 0, 204));
+        jMenuBar1.setFont(new java.awt.Font("Lucida Grande", 0, 16)); // NOI18N
 
         menuArchivo.setText("Archivo");
+        menuArchivo.setFont(new java.awt.Font("Lucida Grande", 0, 16)); // NOI18N
 
+        jMenuAccesoBbdd.setFont(new java.awt.Font("Lucida Grande", 0, 16)); // NOI18N
         jMenuAccesoBbdd.setText("Acceso BBDD");
         jMenuAccesoBbdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -147,6 +150,7 @@ public class Principal extends javax.swing.JFrame {
         });
         menuArchivo.add(jMenuAccesoBbdd);
 
+        menuAbrirBbdd.setFont(new java.awt.Font("Lucida Grande", 0, 16)); // NOI18N
         menuAbrirBbdd.setText("Buscar Archivos");
         menuAbrirBbdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -158,7 +162,9 @@ public class Principal extends javax.swing.JFrame {
         jMenuBar1.add(menuArchivo);
 
         jMenuGestion.setText("Gestion");
+        jMenuGestion.setFont(new java.awt.Font("Lucida Grande", 0, 16)); // NOI18N
 
+        jMenuTablas.setFont(new java.awt.Font("Lucida Grande", 0, 16)); // NOI18N
         jMenuTablas.setText("Seleccionar Tabla");
         jMenuTablas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -167,6 +173,7 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenuGestion.add(jMenuTablas);
 
+        jMenuItemListado.setFont(new java.awt.Font("Lucida Grande", 0, 16)); // NOI18N
         jMenuItemListado.setLabel("Listado Completo");
         jMenuItemListado.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -175,6 +182,7 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenuGestion.add(jMenuItemListado);
 
+        jMenuBuscar.setFont(new java.awt.Font("Lucida Grande", 0, 16)); // NOI18N
         jMenuBuscar.setText("Buscar");
         jMenuBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -183,6 +191,7 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenuGestion.add(jMenuBuscar);
 
+        jMenuAñadirRegistro2.setFont(new java.awt.Font("Lucida Grande", 0, 16)); // NOI18N
         jMenuAñadirRegistro2.setText("Añadir Registro");
         jMenuAñadirRegistro2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -192,6 +201,7 @@ public class Principal extends javax.swing.JFrame {
         jMenuGestion.add(jMenuAñadirRegistro2);
         jMenuGestion.add(jSeparator1);
 
+        jMenuAñadirRegistro.setFont(new java.awt.Font("Lucida Grande", 0, 16)); // NOI18N
         jMenuAñadirRegistro.setText("Añadir Registro old");
         jMenuAñadirRegistro.setEnabled(false);
         jMenuAñadirRegistro.addActionListener(new java.awt.event.ActionListener() {
@@ -201,6 +211,7 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenuGestion.add(jMenuAñadirRegistro);
 
+        jMenuItemListadoId.setFont(new java.awt.Font("Lucida Grande", 0, 16)); // NOI18N
         jMenuItemListadoId.setText("Listado por  Id");
         jMenuItemListadoId.setEnabled(false);
         jMenuItemListadoId.addActionListener(new java.awt.event.ActionListener() {
@@ -213,7 +224,9 @@ public class Principal extends javax.swing.JFrame {
         jMenuBar1.add(jMenuGestion);
 
         jMenu1.setText("Acerca de");
+        jMenu1.setFont(new java.awt.Font("Lucida Grande", 0, 16)); // NOI18N
 
+        jMenuAcerca.setFont(new java.awt.Font("Lucida Grande", 0, 16)); // NOI18N
         jMenuAcerca.setText("Acerca de");
         jMenuAcerca.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -225,7 +238,9 @@ public class Principal extends javax.swing.JFrame {
         jMenuBar1.add(jMenu1);
 
         menuSalir.setText("Salir");
+        menuSalir.setFont(new java.awt.Font("Lucida Grande", 0, 16)); // NOI18N
 
+        jMenuSalir.setFont(new java.awt.Font("Lucida Grande", 0, 16)); // NOI18N
         jMenuSalir.setText("Salir");
         jMenuSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
