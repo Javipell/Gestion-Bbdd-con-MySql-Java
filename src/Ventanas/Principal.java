@@ -2,6 +2,7 @@
 package Ventanas;
 
 import ClasesTablas.Persona;
+import Conexion.ClassCampos;
 import Conexion.ConexionMySql;
 import ListaArray.ListaPersona;
 import java.sql.ResultSet;
@@ -30,6 +31,7 @@ public class Principal extends javax.swing.JFrame {
     public static String[][] tiposCampos; 
     public static ResultSet listaDatos = null;
     public static int filaDatos = 0;
+    public String[][] datosRecogidos;
 
     /**
      * Creates new form Principal
@@ -66,8 +68,9 @@ public class Principal extends javax.swing.JFrame {
         jMenuTablas = new javax.swing.JMenuItem();
         jMenuItemListado = new javax.swing.JMenuItem();
         jMenuBuscar = new javax.swing.JMenuItem();
-        jMenuAñadirRegistro2 = new javax.swing.JMenuItem();
+        jMenuAñadir3 = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        jMenuAñadirRegistro2 = new javax.swing.JMenuItem();
         jMenuAñadirRegistro = new javax.swing.JMenuItem();
         jMenuItemListadoId = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
@@ -191,18 +194,27 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenuGestion.add(jMenuBuscar);
 
+        jMenuAñadir3.setFont(new java.awt.Font("Lucida Grande", 0, 16)); // NOI18N
+        jMenuAñadir3.setText("Añadir Registro");
+        jMenuAñadir3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuAñadir3ActionPerformed(evt);
+            }
+        });
+        jMenuGestion.add(jMenuAñadir3);
+        jMenuGestion.add(jSeparator1);
+
         jMenuAñadirRegistro2.setFont(new java.awt.Font("Lucida Grande", 0, 16)); // NOI18N
-        jMenuAñadirRegistro2.setText("Añadir Registro");
+        jMenuAñadirRegistro2.setText("Añadir Registro2");
         jMenuAñadirRegistro2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuAñadirRegistro2ActionPerformed(evt);
             }
         });
         jMenuGestion.add(jMenuAñadirRegistro2);
-        jMenuGestion.add(jSeparator1);
 
         jMenuAñadirRegistro.setFont(new java.awt.Font("Lucida Grande", 0, 16)); // NOI18N
-        jMenuAñadirRegistro.setText("Añadir Registro old");
+        jMenuAñadirRegistro.setText("Añadir Registro1");
         jMenuAñadirRegistro.setEnabled(false);
         jMenuAñadirRegistro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -400,7 +412,7 @@ public class Principal extends javax.swing.JFrame {
 
             
             //Persona p = new Persona();
-            ListaPersona lista = new ListaPersona();
+            //ListaPersona lista = new ListaPersona();
 
             String mensaje = "Introduce \n\n";
             //String[] datosSolicitados = {"Identificador", "Nombre", "Edad", "Profesion", "Telefono"};
@@ -563,6 +575,148 @@ public class Principal extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_jTable1MouseClicked
+
+    private void jMenuAñadir3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuAñadir3ActionPerformed
+        // TODO add your handling code here:
+        jPanel1.setVisible(false);
+        if (creaConexion()==true)
+        {
+            conexion.obtieneNombresCampos( tablaSeleccionada );
+            conexion.obtenerNombresColumnas(bbddSeleccionada, tablaSeleccionada);
+            
+            ClassCampos classCampos = new ClassCampos();
+            ArrayList <ClassCampos> arrayCamposConexion = conexion.getaCCampos();
+            
+            String mensaje = "Introduce \n\n";
+            boolean error = false ;
+            
+            datosRecogidos = new String[9][ arrayCamposConexion.size() ];
+            String sqlCampos = "INSERT INTO " + tablaSeleccionada  + " (";
+            String sqlValores = " VALUES (";
+            String sql = "";
+            System.out.println("numero de campos a pedir "+arrayCamposConexion.size());
+            for (int i = 0; i < arrayCamposConexion.size(); i++) 
+            {
+                
+                classCampos = arrayCamposConexion.get(i);
+                System.out.println("campo a pedir "+ classCampos.getNombreCampo());
+                // si no es autoincremental que pida datos
+                if ( !"YES".equals( classCampos.getAutoIncremento() ) )
+                {
+                    //<editor-fold defaultstate="collapsed" desc="pedir el dato mientras haya error">
+                    do 
+                    {
+                        error = false;
+                        datosRecogidos[2][i] = JOptionPane.showInputDialog(null, 
+                        (mensaje + classCampos.getNombreCampo() ) + " : \n" );
+                        //<editor-fold defaultstate="collapsed" desc="CONTROL DE ERRORES">
+
+                        // si el tipo de campo es un entero lo valida
+                        if ( "INT".equals(classCampos.getTipoCampo() ) )
+                        {
+                            // si el campo esta vacio lo cambia por 0
+                            datosRecogidos[2][i]= ("".equals(datosRecogidos[2][i]) ) 
+                                    ? "0" : datosRecogidos[2][i] ;
+                            // comprueba si es un numero
+                            if (!Comunes.comprobar.isNumerico(datosRecogidos[2][i] ) 
+                                    || datosRecogidos[2][i].isEmpty()) 
+                            {
+                                error=true;
+                            }
+                        }
+                        System.out.println("tipo entero "+ error);
+                        // si el tipo de dato es fecha
+                        if ("DATE".equals(classCampos.getTipoCampo()) 
+                                || "DATETIME".equals( classCampos.getTipoCampo() )) 
+                        {
+                            // si no puede ser nulo y la fecha no es correcta da error
+                            if ( classCampos.getNulo() !=1 
+                                    && !Comunes.comprobar.isFecha(datosRecogidos[2][i]) ) 
+                            {
+                                error=true; 
+                            }
+                        }
+                        System.out.println("tipo fecha "+ error);
+                        // si el tipo de campo es decimal
+                        if ("DECIMAL".equals( classCampos.getTipoCampo() ) ) 
+                        {
+                            // si el campo esta vacio lo cambia por 0.0
+                            datosRecogidos[2][i]= ("".equals(datosRecogidos[2][i]) ) 
+                                    ? "0.0" : datosRecogidos[2][i] ;
+                            // comprueba si es decimal
+                            if (!Comunes.comprobar.isDecimal(datosRecogidos[2][i])) 
+                            {
+                                error=true;
+                            }
+                        }
+                        System.out.println("tipo decimal "+ error);
+                        
+                        // comprueba si el campo puede ser nulo 
+                        if ( classCampos.getNulo() !=1 )
+                        {
+                            System.out.println("comprueba nulo "+classCampos.getNulo() 
+                                    + " valor "+ datosRecogidos[2][i]);
+                            if(  datosRecogidos[2][i].isEmpty() ) 
+                            {
+                                error=true;
+                            }
+                        }
+                        System.out.println("valor nulo "+ error);
+                        //</editor-fold>
+                        // si se ha producido un error muestra mensaje y 
+                        // no ejecuta la consulta
+                        if (error) 
+                        {
+                            JOptionPane.showMessageDialog(null, 
+                                    "El campo " + classCampos.getNombreCampo() 
+                                    + " no puede tener: '" + datosRecogidos[2][i] 
+                                    + "'\nEs del tipo: "  + classCampos.getTipoCampo() 
+                                    + "\nIncremental " + classCampos.getAutoIncremento() 
+                                    + "\nNulo "+ classCampos.getNulo() 
+                                    + "\nDecimal "+ classCampos.getDecimales() 
+                                    + "\nTamaño " + classCampos.getTamano(),
+                                    "Valor Erroneo", JOptionPane.ERROR_MESSAGE);
+                        }
+                    } while( error!=false);
+                    //</editor-fold>
+                
+                    // motaje de la cadena sql,
+                    if ( !datosRecogidos[2][i].isEmpty() )
+                    {
+                        sqlCampos += classCampos.getNombreCampo();
+                        // si es fecha convierte el texto en fecha mysql y la añade 
+                        if ("DATE".equals(classCampos.getTipoCampo()) 
+                                        || "DATETIME".equals( classCampos.getTipoCampo() )) 
+                        {
+                            sqlValores += " STR_TO_DATE('" + datosRecogidos[2][i] + "', '%m/%d/%Y'), "; 
+                        }
+                        // si no es fecha añade el valor entre comillas
+                        else
+                        {
+                            sqlValores += "'" + datosRecogidos[2][i] + "'";
+                        }
+                        // si no es el ultimo campo añade coma
+                        sqlCampos += (i<arrayCamposConexion.size()-1) ? ", " : "";
+                        sqlValores += (i<arrayCamposConexion.size()-1) ? ", " : "" ;
+                    }
+                    
+                } // fin comprobacion autonumerico
+            } // fin del for que recorre los campos
+            sqlCampos = sqlCampos.trim();
+            sqlValores = sqlValores.trim();
+            // si el ultimo caracter es una coma la elimino
+            sqlCampos = ( ",".equals(sqlCampos.substring(sqlCampos.length()-1, sqlCampos.length() ) ) ) 
+                    ? sqlCampos.substring(0,sqlCampos.length()-1) : sqlCampos ;
+            // si el ultimo caracter es una coma la elimino
+            sqlValores = ( ",".equals(sqlValores.substring(sqlValores.length()-1, sqlValores.length() ) ) ) 
+                    ? sqlValores.substring(0,sqlValores.length()-1) : sqlValores ;
+            sql = sqlCampos + ") " + sqlValores + ") ";
+            sql = sql.trim();
+            System.out.println("sql: " + sql);
+            // ejecuta la consulta de insercion
+            conexion.modificaRegistros(sql);
+        }// fin de comprobacion si hay conexion valida
+    }//GEN-LAST:event_jMenuAñadir3ActionPerformed
 
     /**
      * Metodo listadDatos
@@ -829,6 +983,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuItem jMenuAccesoBbdd;
     private javax.swing.JMenuItem jMenuAcerca;
+    private javax.swing.JMenuItem jMenuAñadir3;
     private javax.swing.JMenuItem jMenuAñadirRegistro;
     private javax.swing.JMenuItem jMenuAñadirRegistro2;
     private javax.swing.JMenuBar jMenuBar1;

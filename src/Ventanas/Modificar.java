@@ -312,7 +312,7 @@ public class Modificar extends javax.swing.JFrame {
                         || "DATETIME".equals(valoresModificados[8][i])) 
                 {
                     
-                    if ( "1".equals(valoresModificados[7][i]) 
+                    if ( !"1".equals(valoresModificados[7][i]) 
                             && !Comunes.comprobar.isFecha(valoresModificados[2][i]) ) 
                     {
                         error=true; 
@@ -363,43 +363,49 @@ public class Modificar extends javax.swing.JFrame {
                                 "Valor Erroneo", JOptionPane.ERROR_MESSAGE);
                     break codigo;
                 }
-                // para convertir un string en fecha para mysql
-                // SELECT  STR_TO_DATE(yourdatefield, '%m/%d/%Y') FROM yourtable
-                if ("DATE".equals(valoresModificados[8][i]) 
-                        || "DATETIME".equals(valoresModificados[8][i])) 
+                // si el campo es autonumerico que no haga nada
+                if ( !"SI".equals( valoresModificados[4][i] ) )
                 {
-                    if ( "1".equals(valoresModificados[7][i] ) 
-                            &&  !(valoresModificados[2][i].isEmpty())) 
-                    {
-                        sql += valoresModificados[1][i] 
-                            + "= STR_TO_DATE('" + valoresModificados[2][i]
-                            + "', '%m/%d/%Y') ";
-                    }
-                } else {
-                    sql += valoresModificados[1][i] +"='" + valoresModificados[2][i];
-                }
-                
-                // si no es el ultimo campo añade una coma
-                if ( i < valoresModificados[0].length-1  ) 
-                { 
-                    // si el tipo de campo es una fecha no añade comilla
+                    //<editor-fold defaultstate="collapsed" desc="COMPROBACION FECHAS">
+                    
+                    // para convertir un string en fecha para mysql
+                    // SELECT  STR_TO_DATE(yourdatefield, '%m/%d/%Y') FROM yourtable
                     if ("DATE".equals(valoresModificados[8][i]) 
-                        || "DATETIME".equals(valoresModificados[8][i])) 
+                            || "DATETIME".equals(valoresModificados[8][i])) 
                     {
-                        sql += ", ";
+                        if ( "1".equals(valoresModificados[7][i] ) 
+                                &&  !(valoresModificados[2][i].isEmpty())) 
+                        {
+                            sql += valoresModificados[1][i] 
+                                + "= STR_TO_DATE('" + valoresModificados[2][i]
+                                + "', '%m/%d/%Y') ";
+                        }
                     } else {
-                        sql += "', ";
+                        sql += valoresModificados[1][i] +"='" + valoresModificados[2][i];
                     }
-                }
-                else
-                {
-                    // si el tipo de campo es una fecha no añade comilla
-                    if ("DATE".equals(valoresModificados[8][i]) 
-                        || "DATETIME".equals(valoresModificados[8][i])) 
+                    //</editor-fold>
+                    // si no es el ultimo campo añade una coma
+                    if ( i < valoresModificados[0].length-1  ) 
+                    { 
+                        // si el tipo de campo es una fecha no añade comilla
+                        if ("DATE".equals(valoresModificados[8][i]) 
+                            || "DATETIME".equals(valoresModificados[8][i])) 
+                        {
+                            sql += ", ";
+                        } else {
+                            sql += "', ";
+                        }
+                    }
+                    else
                     {
-                        sql += " ";
-                    } else {
-                        sql += "' ";
+                        // si el tipo de campo es una fecha no añade comilla
+                        if ("DATE".equals(valoresModificados[8][i]) 
+                            || "DATETIME".equals(valoresModificados[8][i])) 
+                        {
+                            sql += " ";
+                        } else {
+                            sql += "' ";
+                        }
                     }
                 }
             }
